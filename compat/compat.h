@@ -44,14 +44,6 @@ size_t strlcpy(char *, const char *, size_t);
 #endif /* NEED_STRLCPY && ! HAVE_STRLCPY */
 
 
-#if defined(NEED_STRDUP) && !defined(HAVE_STRDUP)
-
-char *openbsd_strdup(const char *);
-# define strdup openbsd_strdup
-
-#endif /* NEED_STRDUP && ! HAVE_STRDUP */
-
-
 #if defined(NEED_STRMODE) && !defined(HAVE_STRMODE)
 
 void strmode(register mode_t, register char *);

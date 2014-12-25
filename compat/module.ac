@@ -223,14 +223,6 @@ AC_DEFUN([COMPAT_REPLACE_FUNC], [
 ])
 
 
-# COMPAT_FUNC_STRDUP
-# ------------------
-# Check for strdup().
-AC_DEFUN([COMPAT_FUNC_STRDUP], [
-  COMPAT_REPLACE_FUNC([strdup])
-])
-
-
 # COMPAT_FUNC_STRLCAT
 # -------------------
 # Check for strlcat().
