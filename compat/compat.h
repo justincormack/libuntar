@@ -13,18 +13,6 @@
 #endif
 
 
-#if defined(NEED_BASENAME) && !defined(HAVE_BASENAME)
-
-# ifdef basename
-#  undef basename		/* fix glibc brokenness */
-# endif
-
-char *openbsd_basename(const char *);
-# define basename openbsd_basename
-
-#endif /* NEED_BASENAME && ! HAVE_BASENAME */
-
-
 #if defined(NEED_DIRNAME) && !defined(HAVE_DIRNAME)
 
 char *openbsd_dirname(const char *);

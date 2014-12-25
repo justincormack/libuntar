@@ -19,61 +19,6 @@ AC_DEFUN([COMPAT_VAR___PROGNAME], [
   fi
 ])
 
-
-# COMPAT_FUNC_BASENAME
-# --------------------
-# Check for working basename() function.
-AC_DEFUN([COMPAT_FUNC_BASENAME], [
-  AC_DEFINE([NEED_BASENAME], 1,
-            [Define if you want to use the basename function])
-  AC_CHECK_HEADERS([libgen.h])
-  AC_CACHE_CHECK([for working basename],
-    [compat_cv_func_basename_works],
-    [AC_TRY_RUN([
-#include <stdio.h>
-#ifdef HAVE_LIBGEN_H
-# include <libgen.h>
-#endif
-
-typedef struct {
-  char *test;
-  char *result;
-} test_t;
-
-const test_t tests[] = {
-  { "/usr/local/foo", "foo" },
-  { "/usr/local/foo/", "foo" },
-  { NULL, NULL }
-};
-
-int main() {
-  char test1[1024];
-  int i;
-
-  for (i = 0; tests[i].test; i++) {
-    strcpy(test1, tests[i].test);
-    if (strcmp(basename(test1), tests[i].result) ||
-        strcmp(test1, tests[i].test))
-      exit(1);
-  }
-
-  exit(0);
-}
-],
-      [compat_cv_func_basename_works=yes],
-      [compat_cv_func_basename_works=no],
-      [compat_cv_func_basename_works=no]
-    )]
-  )
-  if test "$compat_cv_func_basename_works" = "yes"; then
-    AC_DEFINE([HAVE_BASENAME], 1,
-              [Define if your system has a working basename])
-  else
-    AC_LIBOBJ([basename])
-  fi
-])
-
-
 # COMPAT_FUNC_DIRNAME
 # -------------------
 # Check for working dirname() function.
