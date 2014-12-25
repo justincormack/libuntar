@@ -40,21 +40,12 @@ tar_set_file_perms(TAR *t, char *realname)
 
 	/* change owner/group */
 	if (geteuid() == 0)
-#ifdef HAVE_LCHOWN
 		if (lchown(filename, uid, gid) == -1)
 		{
 # ifdef DEBUG
 			fprintf(stderr, "lchown(\"%s\", %d, %d): %s\n",
 				filename, uid, gid, strerror(errno));
 # endif
-#else /* ! HAVE_LCHOWN */
-		if (!TH_ISSYM(t) && chown(filename, uid, gid) == -1)
-		{
-# ifdef DEBUG
-			fprintf(stderr, "chown(\"%s\", %d, %d): %s\n",
-				filename, uid, gid, strerror(errno));
-# endif
-#endif /* HAVE_LCHOWN */
 			return -1;
 		}
 
