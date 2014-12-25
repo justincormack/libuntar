@@ -47,7 +47,6 @@ VPATH		= @srcdir@:@top_srcdir@/compat:../listhash
 
 LIBTAR_OBJS	= block.lo \
 		  decode.lo \
-		  encode.lo \
 		  extract.lo \
 		  handle.lo \
 		  libtar_hash.lo \
