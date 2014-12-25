@@ -98,7 +98,6 @@ PSG_REPLACE_TYPE([nlink_t], [unsigned short])
 dnl ### Check for needed functions. ################################
 AC_CHECK_FUNCS([lchown])
 COMPAT_FUNC_SNPRINTF
-COMPAT_FUNC_STRDUP
 AC_FUNC_STRFTIME
 COMPAT_FUNC_STRLCPY
 COMPAT_FUNC_STRMODE

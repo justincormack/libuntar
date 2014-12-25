@@ -94,7 +94,7 @@ TAR;
 
 /* constant values for the TAR options field */
 #define TAR_GNU			 1	/* use GNU extensions */
-#define TAR_VERBOSE		 2	/* output file info to stdout */
+#define TAR_VERBOSE		 2	/* output file info to stdout UNUSED */
 #define TAR_NOOVERWRITE		 4	/* don't overwrite existing files */
 #define TAR_IGNORE_EOT		 8	/* ignore double zero blocks as EOF */
 #define TAR_CHECK_MAGIC		16	/* check magic in file header */

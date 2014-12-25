@@ -30,7 +30,6 @@
 
 
 char *progname;
-int verbose = 0;
 int use_gnu = 0;
 
 #ifdef HAVE_LIBZ
@@ -103,8 +102,7 @@ extract(char *tarfile, char *rootdir)
 		     NULL,
 #endif
 		     O_RDONLY, 0,
-		     (verbose ? TAR_VERBOSE : 0)
-		     | (use_gnu ? TAR_GNU : 0)) == -1)
+		     (use_gnu ? TAR_GNU : 0)) == -1)
 	{
 		fprintf(stderr, "tar_open(): %s\n", strerror(errno));
 		return -1;
@@ -168,9 +166,6 @@ main(int argc, char *argv[])
 			break;
 		case 'C':
 			rootdir = strdup(optarg);
-			break;
-		case 'v':
-			verbose = 1;
 			break;
 		case 'g':
 			use_gnu = 1;
