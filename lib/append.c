@@ -20,15 +20,7 @@
 #include <sys/param.h>
 #include <sys/types.h>
 
-#ifdef STDC_HEADERS
-# include <stdlib.h>
-# include <string.h>
-#endif
-
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
-
+#include <unistd.h>
 
 struct tar_dev
 {

@@ -16,14 +16,9 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
+#include <unistd.h>
 
-#ifdef STDC_HEADERS
-# include <stdlib.h>
-#endif
-
+#include <stdlib.h>
 
 const char libtar_version[] = PACKAGE_VERSION;
 
