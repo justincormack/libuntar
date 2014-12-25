@@ -110,63 +110,6 @@ tartype_t gztype = { (openfunc_t) gzopen_frontend, (closefunc_t) gzclose,
 
 
 int
-create(char *tarfile, char *rootdir, libtar_list_t *l)
-{
-	TAR *t;
-	char *pathname;
-	char buf[MAXPATHLEN];
-	libtar_listptr_t lp;
-
-	if (tar_open(&t, tarfile,
-#ifdef HAVE_LIBZ
-		     (use_zlib ? &gztype : NULL),
-#else
-		     NULL,
-#endif
-		     O_WRONLY | O_CREAT, 0644,
-		     (verbose ? TAR_VERBOSE : 0)
-		     | (use_gnu ? TAR_GNU : 0)) == -1)
-	{
-		fprintf(stderr, "tar_open(): %s\n", strerror(errno));
-		return -1;
-	}
-
-	libtar_listptr_reset(&lp);
-	while (libtar_list_next(l, &lp) != 0)
-	{
-		pathname = (char *)libtar_listptr_data(&lp);
-		if (pathname[0] != '/' && rootdir != NULL)
-			snprintf(buf, sizeof(buf), "%s/%s", rootdir, pathname);
-		else
-			strlcpy(buf, pathname, sizeof(buf));
-		if (tar_append_tree(t, buf, pathname) != 0)
-		{
-			fprintf(stderr,
-				"tar_append_tree(\"%s\", \"%s\"): %s\n", buf,
-				pathname, strerror(errno));
-			tar_close(t);
-			return -1;
-		}
-	}
-
-	if (tar_append_eof(t) != 0)
-	{
-		fprintf(stderr, "tar_append_eof(): %s\n", strerror(errno));
-		tar_close(t);
-		return -1;
-	}
-
-	if (tar_close(t) != 0)
-	{
-		fprintf(stderr, "tar_close(): %s\n", strerror(errno));
-		return -1;
-	}
-
-	return 0;
-}
-
-
-int
 list(char *tarfile)
 {
 	TAR *t;
@@ -275,8 +218,6 @@ usage(void *rootdir)
 {
 	printf("Usage: %s [-C rootdir] [-g] [-z] -x|-t filename.tar\n",
 	       progname);
-	printf("       %s [-C rootdir] [-g] [-z] -c filename.tar ...\n",
-	       progname);
 	free(rootdir);
 	exit(-1);
 }
@@ -314,11 +255,6 @@ main(int argc, char *argv[])
 		case 'g':
 			use_gnu = 1;
 			break;
-		case 'c':
-			if (mode)
-				usage(rootdir);
-			mode = MODE_CREATE;
-			break;
 		case 'x':
 			if (mode)
 				usage(rootdir);
@@ -355,14 +291,6 @@ main(int argc, char *argv[])
 	{
 	case MODE_EXTRACT:
 		return_code = extract(argv[optind], rootdir);
-		break;
-	case MODE_CREATE:
-		tarfile = argv[optind];
-		l = libtar_list_new(LIST_QUEUE, NULL);
-		for (c = optind + 1; c < argc; c++)
-			libtar_list_add(l, argv[c]);
-		return_code = create(tarfile, rootdir, l);
-		libtar_list_free(l, NULL);
 		break;
 	case MODE_LIST:
 		return_code = list(argv[optind]);
