@@ -15,9 +15,3 @@
 
 #include <libtar.h>
 
-#ifdef TLS
-#define TLS_THREAD TLS
-#else
-#define TLS_THREAD
-#endif
-
