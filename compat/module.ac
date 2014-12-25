@@ -167,14 +167,6 @@ AC_DEFUN([COMPAT_REPLACE_FUNC], [
 ])
 
 
-# COMPAT_FUNC_STRLCAT
-# -------------------
-# Check for strlcat().
-AC_DEFUN([COMPAT_FUNC_STRLCAT], [
-  COMPAT_REPLACE_FUNC([strlcat])
-])
-
-
 # COMPAT_FUNC_STRLCPY
 # -------------------
 # Check for strlcpy().
