@@ -76,62 +76,6 @@ int main() {
 ])
 
 
-# COMPAT_FUNC_SNPRINTF
-# --------------------
-# Check for working snprintf() function.
-AC_DEFUN([COMPAT_FUNC_SNPRINTF], [
-  AC_DEFINE([NEED_SNPRINTF], 1,
-            [Define if you want to use the snprintf function])
-  AC_CACHE_CHECK([for working snprintf],
-    [compat_cv_func_snprintf_works],
-    [AC_TRY_RUN([
-#include <stdio.h>
-
-typedef struct {
-  int length;
-  char *test;
-  int retval;
-  char *result;
-} test_t;
-
-const test_t tests[] = {
-  { 10, "12345678901234567890", 20, "123456789" },
-#if 0
-  { 0, "12345678901234567890", 20, NULL },
-  { -1, "12345678901234567890", -1, NULL },
-#endif
-  { 0, NULL, 0, NULL }
-};
-
-int main() {
-  char test1[1024];
-  int i;
-
-  for (i = 0; tests[i].test; i++) {
-    memset(test1, 'X', sizeof(test1));
-    if ((snprintf(test1, tests[i].length, "%s", tests[i].test)
-         != tests[i].retval) ||
-        (tests[i].result && strcmp(tests[i].result, test1)))
-      exit(1);
-  }
-
-  exit(0);
-}
-],
-      [compat_cv_func_snprintf_works=yes],
-      [compat_cv_func_snprintf_works=no],
-      [compat_cv_func_snprintf_works=no]
-    )]
-  )
-  if test "$compat_cv_func_snprintf_works" = "yes"; then
-    AC_DEFINE([HAVE_SNPRINTF], 1,
-              [Define if your system has a working snprintf])
-  else
-    AC_LIBOBJ([snprintf])
-  fi
-])
-
-
 # COMPAT_PROTO_MACRO(FUNCTION, HEADER, MACRO-LIST, [BODY])
 # --------------------------------------------------------
 # Determine which C preprocessor macro is needed to expose prototype of

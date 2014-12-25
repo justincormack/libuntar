@@ -20,15 +20,6 @@ char *openbsd_dirname(const char *);
 
 #endif /* NEED_DIRNAME && ! HAVE_DIRNAME */
 
-#if defined(NEED_SNPRINTF) && !defined(HAVE_SNPRINTF)
-
-int mutt_snprintf(char *, size_t, const char *, ...);
-int mutt_vsnprintf(char *, size_t, const char *, va_list);
-#define snprintf mutt_snprintf
-#define vsnprintf mutt_vsnprintf
-
-#endif /* NEED_SNPRINTF && ! HAVE_SNPRINTF */
-
 
 #if defined(NEED_STRLCAT) && !defined(HAVE_STRLCAT)
 
