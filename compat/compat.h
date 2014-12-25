@@ -32,13 +32,6 @@ size_t strlcpy(char *, const char *, size_t);
 #endif /* NEED_STRLCPY && ! HAVE_STRLCPY */
 
 
-#if defined(NEED_STRMODE) && !defined(HAVE_STRMODE)
-
-void strmode(register mode_t, register char *);
-
-#endif /* NEED_STRMODE && ! HAVE_STRMODE */
-
-
 #ifdef NEED_STRSEP
 
 # ifdef HAVE_STRSEP

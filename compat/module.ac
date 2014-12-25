@@ -182,14 +182,6 @@ AC_DEFUN([COMPAT_FUNC_STRLCPY], [
 ])
 
 
-# COMPAT_FUNC_STRMODE
-# -------------------
-# Check for strmode().
-AC_DEFUN([COMPAT_FUNC_STRMODE], [
-  COMPAT_REPLACE_FUNC([strmode])
-])
-
-
 # COMPAT_FUNC_STRSEP
 # ------------------
 # Check for strsep().
