@@ -21,33 +21,6 @@ char *openbsd_dirname(const char *);
 #endif /* NEED_DIRNAME && ! HAVE_DIRNAME */
 
 
-#ifdef NEED_FNMATCH
-# ifndef HAVE_FNMATCH
-
-#  define FNM_NOMATCH	1	/* Match failed. */
-
-#  define FNM_NOESCAPE	0x01	/* Disable backslash escaping. */
-#  define FNM_PATHNAME	0x02	/* Slash must be matched by slash. */
-#  define FNM_PERIOD	0x04	/* Period must be matched by period. */
-
-#  define FNM_LEADING_DIR 0x08	/* Ignore /<tail> after Imatch. */
-#  define FNM_CASEFOLD	0x10	/* Case insensitive search. */
-#  define FNM_IGNORECASE FNM_CASEFOLD
-#  define FNM_FILE_NAME FNM_PATHNAME
-
-int openbsd_fnmatch(const char *, const char *, int);
-#  define fnmatch openbsd_fnmatch
-
-# else /* HAVE_FNMATCH */
-
-#  ifdef HAVE_FNMATCH_H
-#   include <fnmatch.h>
-#  endif
-
-# endif /* ! HAVE_FNMATCH */
-#endif /* NEED_FNMATCH */
-
-
 #ifdef NEED_MAKEDEV
 
 # ifdef MAJOR_IN_MKDEV

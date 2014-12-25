@@ -76,22 +76,6 @@ int main() {
 ])
 
 
-# COMPAT_FUNC_FNMATCH
-# -------------------
-# Check for working fnmatch() function.
-AC_DEFUN([COMPAT_FUNC_FNMATCH], [
-  AC_DEFINE([NEED_FNMATCH], 1, [Define if you want to use the fnmatch function])
-  AC_CHECK_HEADERS([fnmatch.h])
-  if test "$ac_cv_header_fnmatch_h" = "yes"; then
-    AC_FUNC_FNMATCH
-  fi
-  if test "$ac_cv_func_fnmatch_works" != "yes"; then
-    AC_CHECK_HEADERS([ctype.h])
-    AC_LIBOBJ([fnmatch])
-  fi
-])
-
-
 # COMPAT_FUNC_MAKEDEV
 # -------------------
 # Check for number of arguments expected by makedev().
