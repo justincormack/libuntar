@@ -17,11 +17,7 @@
 #include <sys/param.h>
 #include <dirent.h>
 #include <errno.h>
-
-#ifdef STDC_HEADERS
-# include <string.h>
-#endif
-
+#include <string.h>
 
 int
 tar_extract_glob(TAR *t, char *globname, char *prefix)

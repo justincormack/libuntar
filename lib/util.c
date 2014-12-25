@@ -15,10 +15,7 @@
 #include <stdio.h>
 #include <sys/param.h>
 #include <errno.h>
-
-#ifdef STDC_HEADERS
-# include <string.h>
-#endif
+#include <string.h>
 
 
 /* hashing function for pathnames */

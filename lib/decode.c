@@ -17,11 +17,7 @@
 #include <sys/param.h>
 #include <pwd.h>
 #include <grp.h>
-
-#ifdef STDC_HEADERS
-# include <string.h>
-#endif
-
+#include <string.h>
 
 /* determine full path name */
 char *

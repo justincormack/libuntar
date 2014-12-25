@@ -19,10 +19,7 @@
 #include <time.h>
 #include <limits.h>
 #include <sys/param.h>
-
-#ifdef STDC_HEADERS
-# include <string.h>
-#endif
+#include <string.h>
 
 
 #ifndef _POSIX_LOGIN_NAME_MAX
