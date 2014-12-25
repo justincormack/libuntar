@@ -16,6 +16,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+#ifdef DEBUG
+#include <stdio.h>
+#endif
 
 #define BIT_ISSET(bitmask, bit) ((bitmask) & (bit))
 
