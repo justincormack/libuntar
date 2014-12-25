@@ -122,29 +122,6 @@ int tar_fd(TAR *t);
 int tar_close(TAR *t);
 
 
-/***** append.c ************************************************************/
-
-/* forward declaration to appease the compiler */
-struct tar_dev;
-
-/* cleanup function */
-void tar_dev_free(struct tar_dev *tdp);
-
-/* Appends a file to the tar archive.
- * Arguments:
- *    t        = TAR handle to append to
- *    realname = path of file to append
- *    savename = name to save the file under in the archive
- */
-int tar_append_file(TAR *t, const char *realname, const char *savename);
-
-/* write EOF indicator */
-int tar_append_eof(TAR *t);
-
-/* add file contents to a tarchive */
-int tar_append_regfile(TAR *t, const char *realname);
-
-
 /***** block.c *************************************************************/
 
 /* macros for reading/writing tarchive blocks */
@@ -296,9 +273,6 @@ void int_to_oct_nonull(int num, char *oct, size_t octlen);
 /* extract groups of files */
 int tar_extract_glob(TAR *t, char *globname, char *prefix);
 int tar_extract_all(TAR *t, char *prefix);
-
-/* add a whole tree of files */
-int tar_append_tree(TAR *t, char *realdir, char *savedir);
 
 
 #ifdef __cplusplus

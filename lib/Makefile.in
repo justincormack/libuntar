@@ -45,8 +45,7 @@ VPATH		= @srcdir@:@top_srcdir@/compat:../listhash
 
 ### Makefile rules - no user-servicable parts below
 
-LIBTAR_OBJS	= append.lo \
-		  block.lo \
+LIBTAR_OBJS	= block.lo \
 		  decode.lo \
 		  encode.lo \
 		  extract.lo \
