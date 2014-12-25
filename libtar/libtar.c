@@ -22,10 +22,6 @@
 # include <string.h>
 # include <unistd.h>
 
-#ifdef DEBUG
-# include <signal.h>
-#endif
-
 #ifdef HAVE_LIBZ
 # include <zlib.h>
 #endif
@@ -36,17 +32,6 @@
 char *progname;
 int verbose = 0;
 int use_gnu = 0;
-
-#ifdef DEBUG
-void
-segv_handler(int sig)
-{
-	puts("OOPS!  Caught SIGSEGV, bailing out...");
-	fflush(stdout);
-	fflush(stderr);
-}
-#endif
-
 
 #ifdef HAVE_LIBZ
 
@@ -277,10 +262,6 @@ main(int argc, char *argv[])
 #endif
 		usage(rootdir);
 	}
-
-#ifdef DEBUG
-	signal(SIGSEGV, segv_handler);
-#endif
 
 	switch (mode)
 	{
