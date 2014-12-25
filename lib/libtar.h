@@ -199,9 +199,6 @@ int tar_skip_regfile(TAR *t);
 /* print the tar header */
 void th_print(TAR *t);
 
-/* print "ls -l"-like output for the file described by th */
-void th_print_long_ls(TAR *t);
-
 
 /***** util.c *************************************************************/
 
