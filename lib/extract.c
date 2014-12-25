@@ -388,7 +388,7 @@ tar_extract_chardev(TAR *t, char *realname)
 	       filename, devmaj, devmin);
 #endif
 	if (mknod(filename, mode | S_IFCHR,
-		  compat_makedev(devmaj, devmin)) == -1)
+		  makedev(devmaj, devmin)) == -1)
 	{
 #ifdef DEBUG
 		perror("mknod()");
@@ -427,7 +427,7 @@ tar_extract_blockdev(TAR *t, char *realname)
 	       filename, devmaj, devmin);
 #endif
 	if (mknod(filename, mode | S_IFBLK,
-		  compat_makedev(devmaj, devmin)) == -1)
+		  makedev(devmaj, devmin)) == -1)
 	{
 #ifdef DEBUG
 		perror("mknod()");
