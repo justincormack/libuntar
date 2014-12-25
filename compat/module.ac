@@ -92,56 +92,6 @@ AC_DEFUN([COMPAT_FUNC_FNMATCH], [
 ])
 
 
-# COMPAT_FUNC_GLOB
-# ----------------
-# Check for working glob() function.
-AC_DEFUN([COMPAT_FUNC_GLOB], [
-  AC_DEFINE([NEED_GLOB], 1, [Define if you want to use the glob function])
-  AC_CHECK_HEADERS([glob.h])
-  AC_CACHE_CHECK([for working glob],
-    [compat_cv_func_glob_works],
-    [AC_TRY_RUN([
-#include <stdio.h>
-#ifdef HAVE_GLOB_H
-# include <glob.h>
-#endif
-
-#ifndef GLOB_ABORTED
-# define GLOB_ABORTED GLOB_ABEND
-#endif
-
-int main() {
-  glob_t g;
-  int status;
-
-  status = glob("conf*", 0, NULL, &g);
-  switch (status) {
-    case 0:
-    case GLOB_NOSPACE:
-    case GLOB_ABORTED:
-    case GLOB_NOMATCH:
-      exit(0);
-      break;
-    default:
-      exit(1);
-      break;
-  }
-}
-],
-      [compat_cv_func_glob_works=yes],
-      [compat_cv_func_glob_works=no],
-      [compat_cv_func_glob_works=no]
-    )]
-  )
-  if test "$compat_cv_func_glob_works" = "yes"; then
-    AC_DEFINE([HAVE_GLOB], 1, [Define if your system has a working glob])
-  else
-    AC_LIBOBJ([glob])
-    AC_CHECK_FUNCS([issetugid])
-  fi
-])
-
-
 # COMPAT_FUNC_MAKEDEV
 # -------------------
 # Check for number of arguments expected by makedev().
