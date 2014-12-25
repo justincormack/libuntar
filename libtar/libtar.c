@@ -88,66 +88,6 @@ tartype_t gztype = { (openfunc_t) gzopen_frontend, (closefunc_t) gzclose,
 
 #endif /* HAVE_LIBZ */
 
-
-int
-list(char *tarfile)
-{
-	TAR *t;
-	int i;
-
-	if (tar_open(&t, tarfile,
-#ifdef HAVE_LIBZ
-		     (use_zlib ? &gztype : NULL),
-#else
-		     NULL,
-#endif
-		     O_RDONLY, 0,
-		     (verbose ? TAR_VERBOSE : 0)
-		     | (use_gnu ? TAR_GNU : 0)) == -1)
-	{
-		fprintf(stderr, "tar_open(): %s\n", strerror(errno));
-		return -1;
-	}
-
-	while ((i = th_read(t)) == 0)
-	{
-		th_print_long_ls(t);
-#ifdef DEBUG
-		th_print(t);
-#endif
-		if (TH_ISREG(t) && tar_skip_regfile(t) != 0)
-		{
-			fprintf(stderr, "tar_skip_regfile(): %s\n",
-				strerror(errno));
-			return -1;
-		}
-	}
-
-#ifdef DEBUG
-	printf("th_read() returned %d\n", i);
-	printf("EOF mark encountered after %ld bytes\n",
-# ifdef HAVE_LIBZ
-	       (use_zlib
-		? gzseek((gzFile) t->fd, 0, SEEK_CUR)
-		:
-# endif
-	       lseek(t->fd, 0, SEEK_CUR)
-# ifdef HAVE_LIBZ
-	       )
-# endif
-	       );
-#endif
-
-	if (tar_close(t) != 0)
-	{
-		fprintf(stderr, "tar_close(): %s\n", strerror(errno));
-		return -1;
-	}
-
-	return 0;
-}
-
-
 int
 extract(char *tarfile, char *rootdir)
 {
@@ -213,7 +153,7 @@ main(int argc, char *argv[])
 	char *tarfile = NULL;
 	char *rootdir = NULL;
 	int c;
-	int mode = 0;
+	int mode = MODE_EXTRACT;
 	libtar_list_t *l;
 	int return_code = -2;
 
@@ -236,14 +176,6 @@ main(int argc, char *argv[])
 			use_gnu = 1;
 			break;
 		case 'x':
-			if (mode)
-				usage(rootdir);
-			mode = MODE_EXTRACT;
-			break;
-		case 't':
-			if (mode)
-				usage(rootdir);
-			mode = MODE_LIST;
 			break;
 #ifdef HAVE_LIBZ
 		case 'z':
@@ -263,17 +195,7 @@ main(int argc, char *argv[])
 		usage(rootdir);
 	}
 
-	switch (mode)
-	{
-	case MODE_EXTRACT:
-		return_code = extract(argv[optind], rootdir);
-		break;
-	case MODE_LIST:
-		return_code = list(argv[optind]);
-		break;
-	default:
-		break;
-	}
+	return_code = extract(argv[optind], rootdir);
 
 	free(rootdir);
 	return return_code;
