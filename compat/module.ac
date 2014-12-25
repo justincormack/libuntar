@@ -181,13 +181,3 @@ AC_DEFUN([COMPAT_FUNC_STRLCAT], [
 AC_DEFUN([COMPAT_FUNC_STRLCPY], [
   COMPAT_REPLACE_FUNC([strlcpy])
 ])
-
-
-# COMPAT_FUNC_STRSEP
-# ------------------
-# Check for strsep().
-AC_DEFUN([COMPAT_FUNC_STRSEP], [
-  COMPAT_REPLACE_FUNC([strsep])
-])
-
-

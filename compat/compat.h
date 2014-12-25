@@ -35,16 +35,3 @@ size_t strlcpy(char *, const char *, size_t);
 #endif /* NEED_STRLCPY && ! HAVE_STRLCPY */
 
 
-#ifdef NEED_STRSEP
-
-# ifdef HAVE_STRSEP
-#  define _LINUX_SOURCE_COMPAT		/* needed on AIX 4.3.3 */
-# else
-
-char *strsep(register char **, register const char *);
-
-# endif
-
-#endif /* NEED_STRSEP */
-
-
