@@ -280,14 +280,6 @@ AC_DEFUN([COMPAT_REPLACE_FUNC], [
 ])
 
 
-# COMPAT_FUNC_INET_ATON
-# ---------------------
-# Check for inet_aton().
-AC_DEFUN([COMPAT_FUNC_INET_ATON], [
-  COMPAT_REPLACE_FUNC([inet_aton])
-])
-
-
 # COMPAT_FUNC_STRDUP
 # ------------------
 # Check for strdup().

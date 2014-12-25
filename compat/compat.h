@@ -48,13 +48,6 @@ int openbsd_fnmatch(const char *, const char *, int);
 #endif /* NEED_FNMATCH */
 
 
-#if defined(NEED_INET_ATON) && !defined(HAVE_INET_ATON)
-
-int inet_aton(const char *, struct in_addr *);
-
-#endif /* NEED_INET_ATON && ! HAVE_INET_ATON */
-
-
 #ifdef NEED_MAKEDEV
 
 # ifdef MAJOR_IN_MKDEV
