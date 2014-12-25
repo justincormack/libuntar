@@ -8,6 +8,18 @@
 #include <stdarg.h>
 #include <stddef.h>
 
+#ifdef HAVE_LIBGEN_H
+# include <libgen.h>
+#endif
+
+
+#if defined(NEED_DIRNAME) && !defined(HAVE_DIRNAME)
+
+char *openbsd_dirname(const char *);
+# define dirname openbsd_dirname
+
+#endif /* NEED_DIRNAME && ! HAVE_DIRNAME */
+
 #if defined(NEED_SNPRINTF) && !defined(HAVE_SNPRINTF)
 
 int mutt_snprintf(char *, size_t, const char *, ...);
