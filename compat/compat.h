@@ -48,46 +48,6 @@ int openbsd_fnmatch(const char *, const char *, int);
 #endif /* NEED_FNMATCH */
 
 
-#ifdef NEED_GETHOSTBYNAME_R
-
-# include <netdb.h>
-
-# if GETHOSTBYNAME_R_NUM_ARGS != 6
-
-int compat_gethostbyname_r(const char *, struct hostent *,
-			   char *, size_t, struct hostent **, int *);
-
-#  define gethostbyname_r compat_gethostbyname_r
-
-# endif /* GETHOSTBYNAME_R_NUM_ARGS != 6 */
-
-#endif /* NEED_GETHOSTBYNAME_R */
-
-
-#if defined(NEED_GETHOSTNAME) && !defined(HAVE_GETHOSTNAME)
-
-int gethostname(char *, size_t);
-
-#endif /* NEED_GETHOSTNAME && ! HAVE_GETHOSTNAME */
-
-
-#ifdef NEED_GETSERVBYNAME_R
-
-# include <netdb.h>
-
-# if GETSERVBYNAME_R_NUM_ARGS != 6
-
-int compat_getservbyname_r(const char *, const char *, struct servent *,
-			   char *, size_t, struct servent **);
-
-#  define getservbyname_r compat_getservbyname_r
-
-# endif /* GETSERVBYNAME_R_NUM_ARGS != 6 */
-
-#endif /* NEED_GETSERVBYNAME_R */
-
-
-
 #if defined(NEED_INET_ATON) && !defined(HAVE_INET_ATON)
 
 int inet_aton(const char *, struct in_addr *);
