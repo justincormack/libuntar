@@ -19,13 +19,8 @@
 #include <sys/param.h>
 #include <stdlib.h>
 
-#ifdef STDC_HEADERS
 # include <string.h>
-#endif
-
-#ifdef HAVE_UNISTD_H
 # include <unistd.h>
-#endif
 
 #ifdef DEBUG
 # include <signal.h>
