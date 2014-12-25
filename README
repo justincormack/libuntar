@@ -10,5 +10,9 @@ add tests, and remove all support for obsolete platforms, and simplify
 the build process, so there is just a very minimal library to extract
 tar files, optionally with compression.
 
+Current build instructions (due to change)
 
-
+   autoreconf --force --install
+   ./configure
+   make
+   make install
