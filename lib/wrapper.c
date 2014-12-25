@@ -17,7 +17,6 @@
 #include <sys/param.h>
 #include <dirent.h>
 #include <errno.h>
-#include <fnmatch.h>
 
 #ifdef STDC_HEADERS
 # include <string.h>
