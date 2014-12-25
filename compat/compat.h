@@ -20,33 +20,6 @@ char *openbsd_dirname(const char *);
 
 #endif /* NEED_DIRNAME && ! HAVE_DIRNAME */
 
-
-#ifdef NEED_MAKEDEV
-
-# ifdef MAJOR_IN_MKDEV
-#  include <sys/mkdev.h>
-# else
-#  ifdef MAJOR_IN_SYSMACROS
-#   include <sys/sysmacros.h>
-#  endif
-# endif
-
-/*
-** On most systems makedev() has two args.
-** Some weird systems, like QNX6, have makedev() functions that expect
-** an extra first argument for "node", which can be 0 for a local
-** machine.
-*/
-
-# ifdef MAKEDEV_THREE_ARGS
-#  define compat_makedev(maj, min)	makedev(0, maj, min)
-# else
-#  define compat_makedev		makedev
-# endif
-
-#endif /* NEED_MAKEDEV */
-
-
 #if defined(NEED_SNPRINTF) && !defined(HAVE_SNPRINTF)
 
 int mutt_snprintf(char *, size_t, const char *, ...);

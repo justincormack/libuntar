@@ -76,47 +76,6 @@ int main() {
 ])
 
 
-# COMPAT_FUNC_MAKEDEV
-# -------------------
-# Check for number of arguments expected by makedev().
-AC_DEFUN([COMPAT_FUNC_MAKEDEV], [
-  AC_REQUIRE([AC_HEADER_MAJOR])
-  AC_DEFINE([NEED_MAKEDEV], 1,
-            [Define if you want to use the makedev function])
-  AC_CACHE_CHECK([whether makedev expects three arguments],
-    [compat_cv_func_makedev_three_args],
-    [AC_COMPILE_IFELSE([
-      AC_LANG_PROGRAM([[
-#include <sys/types.h>
-#ifdef MAJOR_IN_MKDEV
-# include <sys/mkdev.h>
-#else
-# ifdef MAJOR_IN_SYSMACROS
-#  include <sys/sysmacros.h>
-# endif
-#endif
-]], [[
-dev_t dev;
-major_t maj = 5;
-minor_t min = 7;
-
-dev = makedev(0, maj, min);
-if (major(dev) != maj
-    || minor(dev) != min)
-  exit(1);
-exit(0);
-]])],
-      [compat_cv_func_makedev_three_args=yes],
-      [compat_cv_func_makedev_three_args=no]
-    )]
-  )
-  if test "$compat_cv_func_makedev_three_args" = "yes"; then
-    AC_DEFINE([MAKEDEV_THREE_ARGS], 1,
-              [Define as 1 if makedev expects three arguments])
-  fi
-])
-
-
 # COMPAT_FUNC_SNPRINTF
 # --------------------
 # Check for working snprintf() function.
