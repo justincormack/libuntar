@@ -255,14 +255,6 @@ AC_DEFUN([COMPAT_FUNC_STRMODE], [
 ])
 
 
-# COMPAT_FUNC_STRRSTR
-# -------------------
-# Check for strrstr().
-AC_DEFUN([COMPAT_FUNC_STRRSTR], [
-  COMPAT_REPLACE_FUNC([strrstr])
-])
-
-
 # COMPAT_FUNC_STRSEP
 # ------------------
 # Check for strsep().

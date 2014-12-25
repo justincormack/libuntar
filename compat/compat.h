@@ -59,13 +59,6 @@ void strmode(register mode_t, register char *);
 #endif /* NEED_STRMODE && ! HAVE_STRMODE */
 
 
-#if defined(NEED_STRRSTR) && !defined(HAVE_STRRSTR)
-
-char *strrstr(char *, char *);
-
-#endif /* NEED_STRRSTR && ! HAVE_STRRSTR */
-
-
 #ifdef NEED_STRSEP
 
 # ifdef HAVE_STRSEP
