@@ -13,13 +13,8 @@
 #endif
 
 
-#if defined(NEED_DIRNAME) && !defined(HAVE_DIRNAME)
-
 char *openbsd_dirname(const char *);
-# define dirname openbsd_dirname
-
-#endif /* NEED_DIRNAME && ! HAVE_DIRNAME */
-
+char *openbsd_basename(const char *);
 
 #if defined(NEED_STRLCPY) && !defined(HAVE_STRLCPY)
 

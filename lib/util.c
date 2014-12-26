@@ -26,7 +26,7 @@ path_hashfunc(char *key, int numbuckets)
 	char *p;
 
 	strcpy(buf, key);
-	p = basename(buf);
+	p = openbsd_basename(buf);
 
 	return (((unsigned int)p[0]) % numbuckets);
 }

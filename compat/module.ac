@@ -19,63 +19,6 @@ AC_DEFUN([COMPAT_VAR___PROGNAME], [
   fi
 ])
 
-# COMPAT_FUNC_DIRNAME
-# -------------------
-# Check for working dirname() function.
-AC_DEFUN([COMPAT_FUNC_DIRNAME], [
-  AC_DEFINE([NEED_DIRNAME], 1,
-            [Define if you want to use the dirname function])
-  AC_CHECK_HEADERS([libgen.h])
-  AC_CACHE_CHECK([for working dirname],
-    [compat_cv_func_dirname_works],
-    [AC_TRY_RUN([
-#include <stdio.h>
-#ifdef HAVE_LIBGEN_H
-# include <libgen.h>
-#endif
-
-typedef struct {
-  char *test;
-  char *result;
-} test_t;
-
-const test_t tests[] = {
-  { "foobar", "." },
-  { "/usr/local/foo", "/usr/local" },
-  { "/usr/local/foo/", "/usr/local" },
-  { "/", "/" },
-  { "", "." },
-  { NULL, NULL }
-};
-
-int main() {
-  char test1[1024];
-  int i;
-
-  for (i = 0; tests[i].test; i++) {
-    strcpy(test1, tests[i].test);
-    if (strcmp(dirname(test1), tests[i].result) ||
-        strcmp(test1, tests[i].test))
-      exit(1);
-  }
-
-  exit(0);
-}
-],
-      [compat_cv_func_dirname_works=yes],
-      [compat_cv_func_dirname_works=no],
-      [compat_cv_func_dirname_works=no]
-    )]
-  )
-  if test "$compat_cv_func_dirname_works" = "yes"; then
-    AC_DEFINE([HAVE_DIRNAME], 1,
-              [Define if your system has a working dirname])
-  else
-    AC_LIBOBJ([dirname])
-  fi
-])
-
-
 # COMPAT_PROTO_MACRO(FUNCTION, HEADER, MACRO-LIST, [BODY])
 # --------------------------------------------------------
 # Determine which C preprocessor macro is needed to expose prototype of
