@@ -30,7 +30,6 @@
 
 
 char *progname;
-int use_gnu = 0;
 
 #ifdef HAVE_LIBZ
 
@@ -101,8 +100,7 @@ extract(char *tarfile, char *rootdir)
 #else
 		     NULL,
 #endif
-		     O_RDONLY, 0,
-		     (use_gnu ? TAR_GNU : 0)) == -1)
+		     O_RDONLY, 0, 0) == -1)
 	{
 		fprintf(stderr, "tar_open(): %s\n", strerror(errno));
 		return -1;
@@ -151,20 +149,16 @@ main(int argc, char *argv[])
 	char *tarfile = NULL;
 	char *rootdir = NULL;
 	int c;
-	int mode = MODE_EXTRACT;
 	libtar_list_t *l;
 	int return_code = -2;
 
 	progname = argv[0];
 
-	while ((c = getopt(argc, argv, "C:gxz")) != -1)
+	while ((c = getopt(argc, argv, "C:xz")) != -1)
 		switch (c)
 		{
 		case 'C':
 			rootdir = strdup(optarg);
-			break;
-		case 'g':
-			use_gnu = 1;
 			break;
 		case 'x':
 			break;
@@ -177,11 +171,10 @@ main(int argc, char *argv[])
 			usage(rootdir);
 		}
 
-	if (!mode || ((argc - optind) < (mode == MODE_CREATE ? 2 : 1)))
+	if ((argc - optind) < 1)
 	{
 #ifdef DEBUG
-		printf("argc - optind == %d\tmode == %d\n", argc - optind,
-		       mode);
+		printf("argc - optind == %d\t\n", argc - optind);
 #endif
 		usage(rootdir);
 	}
