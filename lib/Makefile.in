@@ -31,7 +31,6 @@ LIBTOOL         = @LIBTOOL@
 CPPFLAGS	= -I. \
 		  -I.. \
 		  -I${srcdir} \
-		  -I${top_srcdir}/compat \
 		  -I../listhash \
 		  @CPPFLAGS@
 CFLAGS		= @CFLAGS@
@@ -40,7 +39,7 @@ LIBS		= @LIBS@
 LTLIBOBJS	= @LTLIBOBJS@
 RANLIB		= @RANLIB@
 @SET_MAKE@
-VPATH		= @srcdir@:@top_srcdir@/compat:../listhash
+VPATH		= @srcdir@:../listhash
 
 
 ### Makefile rules - no user-servicable parts below
@@ -52,9 +51,12 @@ LIBTAR_OBJS	= block.lo \
 		  libtar_hash.lo \
 		  libtar_list.lo \
 		  util.lo \
+		  basename.lo \
+		  dirname.lo \
+		  strlcpy.lo \
 		  wrapper.lo
 LIBTAR_HDRS	= ../config.h \
-		  ${top_srcdir}/compat/compat.h \
+		  ${srcdir}/compat.h \
 		  ${srcdir}/libtar.h \
 		  ${srcdir}/internal.h \
 		  ../listhash/libtar_listhash.h

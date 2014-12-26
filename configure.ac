@@ -15,7 +15,6 @@ ENCAP_PKG([], [postinstall-encap])
 
 
 dnl ### Load subdirectory modules. ##################################
-PSG_MODULE([compat])
 PSG_MODULE([listhash], [libtar])
 
 
@@ -98,7 +97,6 @@ PSG_REPLACE_TYPE([nlink_t], [unsigned short])
 dnl ### Check for needed functions. ################################
 AC_CHECK_FUNCS([lchown])
 AC_FUNC_STRFTIME
-COMPAT_FUNC_STRLCPY
 
 
 dnl ### Check for libraries. #######################################

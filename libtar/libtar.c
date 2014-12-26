@@ -160,10 +160,6 @@ main(int argc, char *argv[])
 	while ((c = getopt(argc, argv, "cC:gtvVxz")) != -1)
 		switch (c)
 		{
-		case 'V':
-			printf("libtar %s by Mark D. Roth <roth@uiuc.edu>\n",
-			       libtar_version);
-			break;
 		case 'C':
 			rootdir = strdup(optarg);
 			break;

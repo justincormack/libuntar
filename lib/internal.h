@@ -10,8 +10,6 @@
 **  University of Illinois at Urbana-Champaign
 */
 
-#include <config.h>
 #include <compat.h>
-
 #include <libtar.h>
 

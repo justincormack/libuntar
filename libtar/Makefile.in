@@ -32,7 +32,6 @@ CPPFLAGS	= -I.. \
 		  -I../lib \
 		  -I../listhash \
 		  -I${top_srcdir}/lib \
-		  -I${top_srcdir}/compat \
 		  @CPPFLAGS@
 CFLAGS		= @CFLAGS@
 LDFLAGS		= @LDFLAGS@
@@ -47,7 +46,6 @@ VPATH		= @srcdir@
 
 LIBTAR_OBJS	= libtar.lo
 LIBTAR_HDRS	= ../config.h \
-		  ${top_srcdir}/compat/compat.h \
 		  ${top_srcdir}/lib/libtar.h \
 		  ../listhash/libtar_listhash.h
 LIBTAR_LIBS	= $(top_builddir)/lib

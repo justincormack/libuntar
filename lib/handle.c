@@ -20,8 +20,6 @@
 
 #include <stdlib.h>
 
-const char libtar_version[] = PACKAGE_VERSION;
-
 static tartype_t default_type = { open, close, read, write };
 
 

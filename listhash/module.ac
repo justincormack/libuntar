@@ -1,5 +1,4 @@
 AC_DEFUN(subdir[_INIT], [
-  AC_REQUIRE([COMPAT_FUNC_STRLCPY])
 
   if test -z "$2"; then
     LISTHASH_PREFIX="${PACKAGE_NAME}";

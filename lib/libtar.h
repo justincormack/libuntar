@@ -104,8 +104,6 @@ TAR;
 /* this is obsolete - it's here for backwards-compatibility only */
 #define TAR_IGNORE_MAGIC	0
 
-extern const char libtar_version[];
-
 
 /* open a new tarfile handle */
 int tar_open(TAR **t, const char *pathname, tartype_t *type,
