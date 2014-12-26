@@ -68,10 +68,6 @@ tar_open(TAR **t, const char *pathname, tartype_t *type,
 	if ((options & TAR_NOOVERWRITE) && (oflags & O_CREAT))
 		oflags |= O_EXCL;
 
-#ifdef O_BINARY
-	oflags |= O_BINARY;
-#endif
-
 	(*t)->fd = (*((*t)->type->openfunc))(pathname, oflags, mode);
 	if ((*t)->fd == -1)
 	{
