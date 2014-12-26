@@ -20,11 +20,10 @@
 #include <errno.h>
 #include <utime.h>
 #include <sys/stat.h>
+#include <libgen.h>
 
 #include <stdlib.h>
 #include <unistd.h>
-
-char *openbsd_dirname(const char *);
 
 static int tar_extract_file(TAR *t, char *realname);
 
@@ -84,16 +83,22 @@ tar_extract_all(TAR *t, char *prefix)
 static int
 mkdirhier(TAR *t, char *filename)
 {
-	char src[MAXPATHLEN], dst[MAXPATHLEN] = "";
+	char tmp[MAXPATHLEN], src[MAXPATHLEN], dst[MAXPATHLEN] = "";
 	char *dirp, *nextp = src;
 	int retval = 1;
-	char *path = openbsd_dirname(filename);
+	char *path;
 
-	if (strlen(path) + 1 > sizeof(src))
+	/* GNU dirname may modify string, so use temp buffer, sigh */
+	
+	if (strlen(filename) + 1 > sizeof(tmp))
 	{
 		errno = ENAMETOOLONG;
 		return -1;
-	} 
+	}
+	strncpy(tmp, filename, sizeof(tmp));
+
+	path = dirname(tmp);
+	/* path not longer than filename */
 	strncpy(src, path, sizeof(src));
 
 	if (path[0] == '/')

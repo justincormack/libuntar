@@ -46,8 +46,7 @@ LIBTAR_OBJS	= block.lo \
 		  decode.lo \
 		  extract.lo \
 		  handle.lo \
-		  util.lo \
-		  dirname.lo
+		  util.lo
 LIBTAR_HDRS	= ../config.h \
 		  ${srcdir}/libtar.h
 LIBTAR_LIBS	= ./libtar.la

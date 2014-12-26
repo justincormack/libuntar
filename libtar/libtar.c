@@ -26,9 +26,6 @@
 # include <zlib.h>
 #endif
 
-#include <compat.h>
-
-
 char *progname;
 
 int use_chown = 0;
