@@ -161,7 +161,7 @@ tar_extract_regfile(TAR *t, char *realname)
 	uid = th_get_uid(t);
 	gid = th_get_gid(t);
 
-	if (mkdirhier(openbsd_dirname(filename)) == -1)
+	if (mkdirhier(filename) == -1)
 		return -1;
 
 #ifdef DEBUG
@@ -240,7 +240,7 @@ tar_extract_hardlink(TAR * t, char *realname)
 	libtar_hashptr_t hp;
 
 	filename = (realname ? realname : th_get_pathname(t));
-	if (mkdirhier(openbsd_dirname(filename)) == -1)
+	if (mkdirhier(filename) == -1)
 		return -1;
 	libtar_hashptr_reset(&hp);
 	if (libtar_hash_getkey(t->h, &hp, th_get_linkname(t),
@@ -274,7 +274,7 @@ tar_extract_symlink(TAR *t, char *realname)
 	char *filename;
 
 	filename = (realname ? realname : th_get_pathname(t));
-	if (mkdirhier(openbsd_dirname(filename)) == -1)
+	if (mkdirhier(filename) == -1)
 		return -1;
 
 	if (unlink(filename) == -1 && errno != ENOENT)
@@ -309,7 +309,7 @@ tar_extract_chardev(TAR *t, char *realname)
 	devmaj = th_get_devmajor(t);
 	devmin = th_get_devminor(t);
 
-	if (mkdirhier(openbsd_dirname(filename)) == -1)
+	if (mkdirhier(filename) == -1)
 		return -1;
 
 #ifdef DEBUG
@@ -342,7 +342,7 @@ tar_extract_blockdev(TAR *t, char *realname)
 	devmaj = th_get_devmajor(t);
 	devmin = th_get_devminor(t);
 
-	if (mkdirhier(openbsd_dirname(filename)) == -1)
+	if (mkdirhier(filename) == -1)
 		return -1;
 
 #ifdef DEBUG
@@ -372,7 +372,7 @@ tar_extract_dir(TAR *t, char *realname)
 	filename = (realname ? realname : th_get_pathname(t));
 	mode = th_get_mode(t);
 
-	if (mkdirhier(openbsd_dirname(filename)) == -1)
+	if (mkdirhier(filename) == -1)
 		return -1;
 
 #ifdef DEBUG
@@ -421,7 +421,7 @@ tar_extract_fifo(TAR *t, char *realname)
 	filename = (realname ? realname : th_get_pathname(t));
 	mode = th_get_mode(t);
 
-	if (mkdirhier(openbsd_dirname(filename)) == -1)
+	if (mkdirhier(filename) == -1)
 		return -1;
 
 #ifdef DEBUG

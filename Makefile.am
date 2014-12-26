@@ -10,5 +10,5 @@ ACLOCAL_AMFLAGS = -I autoconf
 
 #@SET_MAKE@
 
-SUBDIRS = lib libtar doc
+SUBDIRS = lib libtar
 

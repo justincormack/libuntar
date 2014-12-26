@@ -65,18 +65,19 @@ ino_hash(ino_t *inode)
 
 
 /*
-** mkdirhier() - create all directories in a given path
+** mkdirhier() - create all directories needed for a given filename
 ** returns:
 **	0			success
 **	1			all directories already exist
 **	-1 (and sets errno)	error
 */
 int
-mkdirhier(char *path)
+mkdirhier(char *filename)
 {
 	char src[MAXPATHLEN], dst[MAXPATHLEN] = "";
 	char *dirp, *nextp = src;
 	int retval = 1;
+	char *path = openbsd_dirname(filename);
 
 	if (strlcpy(src, path, sizeof(src)) > sizeof(src))
 	{

@@ -209,7 +209,7 @@ int dev_hash(dev_t *dev);
 int ino_hash(ino_t *inode);
 
 /* create any necessary dirs */
-int mkdirhier(char *path);
+int mkdirhier(char *filename);
 
 /* calculate header checksum */
 int th_crc_calc(TAR *t);
