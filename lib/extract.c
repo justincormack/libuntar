@@ -380,12 +380,9 @@ tar_extract_symlink(TAR *t, char *filename)
 static int
 tar_extract_chardev(TAR *t, char *filename)
 {
-	mode_t mode;
-	unsigned long devmaj, devmin;
-
-	mode = th_get_mode(t);
-	devmaj = th_get_devmajor(t);
-	devmin = th_get_devminor(t);
+	mode_t mode = th_get_mode(t);
+	unsigned long devmaj = th_get_devmajor(t);
+	unsigned long devmin = th_get_devminor(t);
 
 	if (mkdirhier(t, filename) == -1)
 		return -1;
@@ -411,12 +408,9 @@ tar_extract_chardev(TAR *t, char *filename)
 static int
 tar_extract_blockdev(TAR *t, char *filename)
 {
-	mode_t mode;
-	unsigned long devmaj, devmin;
-
-	mode = th_get_mode(t);
-	devmaj = th_get_devmajor(t);
-	devmin = th_get_devminor(t);
+	mode_t mode = th_get_mode(t);
+	unsigned long devmaj = th_get_devmajor(t);
+	unsigned long devmin = th_get_devminor(t);
 
 	if (mkdirhier(t, filename) == -1)
 		return -1;
