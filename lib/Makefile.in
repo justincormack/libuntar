@@ -49,8 +49,7 @@ LIBTAR_OBJS	= block.lo \
 		  util.lo \
 		  dirname.lo
 LIBTAR_HDRS	= ../config.h \
-		  ${srcdir}/libtar.h \
-		  ${srcdir}/internal.h
+		  ${srcdir}/libtar.h
 LIBTAR_LIBS	= ./libtar.la
 ALL		= libtar.la
 LDFLAGS		= @LDFLAGS@
