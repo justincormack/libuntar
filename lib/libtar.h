@@ -193,12 +193,6 @@ int tar_extract_fifo(TAR *t, char *realname);
 int tar_extract_regfile(TAR *t, char *realname);
 
 
-/***** output.c ************************************************************/
-
-/* print the tar header */
-void th_print(TAR *t);
-
-
 /***** util.c *************************************************************/
 
 /* hashing function for pathnames */

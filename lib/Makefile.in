@@ -51,7 +51,6 @@ LIBTAR_OBJS	= block.lo \
 		  handle.lo \
 		  libtar_hash.lo \
 		  libtar_list.lo \
-		  output.lo \
 		  util.lo \
 		  wrapper.lo
 LIBTAR_HDRS	= ../config.h \
