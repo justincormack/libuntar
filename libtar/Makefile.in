@@ -30,7 +30,6 @@ CC		= @CC@
 LIBTOOL         = @LIBTOOL@
 CPPFLAGS	= -I.. \
 		  -I../lib \
-		  -I../listhash \
 		  -I${top_srcdir}/lib \
 		  @CPPFLAGS@
 CFLAGS		= @CFLAGS@
@@ -46,8 +45,7 @@ VPATH		= @srcdir@
 
 LIBTAR_OBJS	= libtar.lo
 LIBTAR_HDRS	= ../config.h \
-		  ${top_srcdir}/lib/libtar.h \
-		  ../listhash/libtar_listhash.h
+		  ${top_srcdir}/lib/libtar.h
 LIBTAR_LIBS	= $(top_builddir)/lib
 ALL		= libtar
 

@@ -15,7 +15,6 @@ ENCAP_PKG([], [postinstall-encap])
 
 
 dnl ### Load subdirectory modules. ##################################
-PSG_MODULE([listhash], [libtar])
 
 
 dnl ### Set some option defaults. ###################################

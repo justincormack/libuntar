@@ -31,7 +31,6 @@ LIBTOOL         = @LIBTOOL@
 CPPFLAGS	= -I. \
 		  -I.. \
 		  -I${srcdir} \
-		  -I../listhash \
 		  @CPPFLAGS@
 CFLAGS		= @CFLAGS@
 LDFLAGS		= @LDFLAGS@
@@ -39,7 +38,6 @@ LIBS		= @LIBS@
 LTLIBOBJS	= @LTLIBOBJS@
 RANLIB		= @RANLIB@
 @SET_MAKE@
-VPATH		= @srcdir@:../listhash
 
 
 ### Makefile rules - no user-servicable parts below
@@ -48,8 +46,6 @@ LIBTAR_OBJS	= block.lo \
 		  decode.lo \
 		  extract.lo \
 		  handle.lo \
-		  libtar_hash.lo \
-		  libtar_list.lo \
 		  util.lo \
 		  basename.lo \
 		  dirname.lo \
@@ -57,16 +53,13 @@ LIBTAR_OBJS	= block.lo \
 LIBTAR_HDRS	= ../config.h \
 		  ${srcdir}/compat.h \
 		  ${srcdir}/libtar.h \
-		  ${srcdir}/internal.h \
-		  ../listhash/libtar_listhash.h
+		  ${srcdir}/internal.h
 LIBTAR_LIBS	= ./libtar.la
 ALL		= libtar.la
 LDFLAGS		= @LDFLAGS@
 CFLAGS		= @CFLAGS@
 
-DISTCLEANFILES	= ../listhash/libtar_listhash.h \
-		  ../listhash/libtar_list.c \
-		  ../listhash/libtar_hash.c
+DISTCLEANFILES	=
 
 
 all: ${ALL}
@@ -83,9 +76,6 @@ ${LIBTAR_OBJS}: ${LIBTAR_HDRS}
 %.lo: $(srcdir)/%.c
 	$(LIBTOOL) --mode=compile ${CC} ${CFLAGS} ${CPPFLAGS} -c -o $@ $<
 
-%.lo: ../listhash/%.c
-	$(LIBTOOL) --mode=compile ${CC} ${CFLAGS} ${CPPFLAGS} -c -o $@ $<
-
 %.lo: ${top_srcdir}/compat/%.c
 	$(LIBTOOL) --mode=compile ${CC} ${CFLAGS} ${CPPFLAGS} -c -o $@ $<
 
@@ -100,5 +90,4 @@ install: ${ALL}
 	$(LIBTOOL) --mode=install ${INSTALL_DATA} libtar.la ${DESTDIR}${libdir}
 	${MKDIR} ${DESTDIR}${includedir}
 	${INSTALL_DATA} ${srcdir}/libtar.h ${DESTDIR}${includedir}
-	${INSTALL_DATA} ../listhash/libtar_listhash.h ${DESTDIR}${includedir}
 
