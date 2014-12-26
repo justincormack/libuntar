@@ -54,6 +54,7 @@ uid_t
 th_get_uid(TAR *t)
 {
 	int uid;
+#ifdef USE_SYMBOLIC_IDS
 	struct passwd *pw;
 
 	pw = getpwnam(t->th_buf.uname);
@@ -61,6 +62,7 @@ th_get_uid(TAR *t)
 		return pw->pw_uid;
 
 	/* if the password entry doesn't exist */
+#endif
 	sscanf(t->th_buf.uid, "%o", &uid);
 	return uid;
 }
@@ -70,6 +72,7 @@ gid_t
 th_get_gid(TAR *t)
 {
 	int gid;
+#ifdef USE_SYMBOLIC_IDS
 	struct group *gr;
 
 	gr = getgrnam(t->th_buf.gname);
@@ -77,6 +80,7 @@ th_get_gid(TAR *t)
 		return gr->gr_gid;
 
 	/* if the group entry doesn't exist */
+#endif
 	sscanf(t->th_buf.gid, "%o", &gid);
 	return gid;
 }
