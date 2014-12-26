@@ -100,11 +100,7 @@ tar_extract_file(TAR *t, char *realname)
 	}
 
 	if (TH_ISDIR(t))
-	{
 		i = tar_extract_dir(t, realname);
-		if (i == 1)
-			i = 0;
-	}
 	else if (TH_ISLNK(t))
 		i = tar_extract_hardlink(t, realname);
 	else if (TH_ISSYM(t))
@@ -403,7 +399,7 @@ tar_extract_dir(TAR *t, char *realname)
 #ifdef DEBUG
 				puts("  *** using existing directory");
 #endif
-				return 1;
+				return 0;
 			}
 		}
 		else
