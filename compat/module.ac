@@ -1,3 +1,24 @@
+# COMPAT_VAR___PROGNAME
+# ---------------------
+# Check if libc defines the __progname variable.
+AC_DEFUN([COMPAT_VAR___PROGNAME], [
+  AC_CACHE_CHECK([if libc defines __progname],
+    [ac_cv_libc_defines___progname],
+    [AC_TRY_LINK([],
+      [
+        extern char *__progname;
+        printf("%s", __progname);
+      ],
+      [ac_cv_libc_defines___progname=yes],
+      [ac_cv_libc_defines___progname=no]
+    )]
+  )
+  if test "$ac_cv_libc_defines___progname" = "yes"; then
+    AC_DEFINE([HAVE___PROGNAME], 1,
+      [Define if libc defines the __progname variable])
+  fi
+])
+
 # COMPAT_FUNC_DIRNAME
 # -------------------
 # Check for working dirname() function.
