@@ -166,9 +166,6 @@ static int
 tar_extract_file(TAR *t, char *realname)
 {
 	int i;
-	char *lnp;
-	int pathname_len;
-	int realname_len;
 
 	if (t->options & TAR_NOOVERWRITE)
 	{
@@ -204,20 +201,6 @@ tar_extract_file(TAR *t, char *realname)
 	i = tar_set_file_perms(t, realname);
 	if (i != 0)
 		return i;
-
-	pathname_len = strlen(th_get_pathname(t)) + 1;
-	realname_len = strlen(realname) + 1;
-	lnp = (char *)calloc(1, pathname_len + realname_len);
-	if (lnp == NULL)
-		return -1;
-	strcpy(&lnp[0], th_get_pathname(t));
-	strcpy(&lnp[pathname_len], realname);
-#ifdef DEBUG
-	printf("tar_extract_file(): calling libtar_hash_add(): key=\"%s\", "
-	       "value=\"%s\"\n", th_get_pathname(t), realname);
-#endif
-	if (libtar_hash_add(t->h, lnp) != 0)
-		return -1;
 
 	return 0;
 }
@@ -318,21 +301,10 @@ tar_extract_regfile(TAR *t, char *filename)
 static int
 tar_extract_hardlink(TAR * t, char *filename)
 {
-	char *linktgt = NULL;
-	char *lnp;
-	libtar_hashptr_t hp;
+	char *linktgt = th_get_linkname(t);
 
 	if (mkdirhier(t, filename) == -1)
 		return -1;
-	libtar_hashptr_reset(&hp);
-	if (libtar_hash_getkey(t->h, &hp, th_get_linkname(t),
-			       (libtar_matchfunc_t)libtar_str_match) != 0)
-	{
-		lnp = (char *)libtar_hashptr_data(&hp);
-		linktgt = &lnp[strlen(lnp) + 1];
-	}
-	else
-		linktgt = th_get_linkname(t);
 
 #ifdef DEBUG
 	printf("  ==> extracting: %s (link to %s)\n", filename, linktgt);

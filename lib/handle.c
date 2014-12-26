@@ -46,17 +46,6 @@ tar_init(TAR **t, const char *pathname, tartype_t *type,
 	(*t)->dirfd = AT_FDCWD;
 	(*t)->atflags = AT_SYMLINK_NOFOLLOW;
 
-	if ((oflags & O_ACCMODE) == O_RDONLY)
-		(*t)->h = libtar_hash_new(256,
-					  (libtar_hashfunc_t)path_hashfunc);
-	else
-		(*t)->h = libtar_hash_new(16, (libtar_hashfunc_t)dev_hash);
-	if ((*t)->h == NULL)
-	{
-		free(*t);
-		return -1;
-	}
-
 	return 0;
 }
 
@@ -75,7 +64,6 @@ tar_open(TAR **t, const char *pathname, tartype_t *type,
 	(*t)->fd = (*((*t)->type->openfunc))(pathname, oflags, mode);
 	if ((*t)->fd == -1)
 	{
-		libtar_hash_free((*t)->h, NULL);
 		free(*t);
 		return -1;
 	}
@@ -111,13 +99,9 @@ tar_close(TAR *t)
 
 	i = (*(t->type->closefunc))(t->fd);
 
-	if (t->h != NULL)
-		libtar_hash_free(t->h, free);
 	if (t->th_pathname != NULL)
 		free(t->th_pathname);
 	free(t);
 
 	return i;
 }
-
-

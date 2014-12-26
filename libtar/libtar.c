@@ -152,7 +152,6 @@ main(int argc, char *argv[])
 	char *tarfile = NULL;
 	char *rootdir = NULL;
 	int c;
-	libtar_list_t *l;
 	int return_code = -2;
 
 	progname = argv[0];
