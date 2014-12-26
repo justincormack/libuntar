@@ -157,7 +157,7 @@ main(int argc, char *argv[])
 
 	progname = argv[0];
 
-	while ((c = getopt(argc, argv, "cC:gtvVxz")) != -1)
+	while ((c = getopt(argc, argv, "C:gxz")) != -1)
 		switch (c)
 		{
 		case 'C':
