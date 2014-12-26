@@ -87,11 +87,12 @@ mkdirhier(TAR *t, char *filename)
 	int retval = 1;
 	char *path = openbsd_dirname(filename);
 
-	if (strlcpy(src, path, sizeof(src)) > sizeof(src))
+	if (strlen(path) + 1 > sizeof(src))
 	{
 		errno = ENAMETOOLONG;
 		return -1;
-	}
+	} 
+	strncpy(src, path, sizeof(src));
 
 	if (path[0] == '/')
 		strcpy(dst, "/");
