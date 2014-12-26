@@ -19,6 +19,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <utime.h>
+#include <sys/stat.h>
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -31,44 +32,87 @@ static int tar_extract_blockdev(TAR *t, char *filename);
 static int tar_extract_fifo(TAR *t, char *filename);
 static int tar_extract_regfile(TAR *t, char *filename);
 
+/*
+** mkdirhier() - create all directories needed for a given filename
+** returns:
+**	0			success
+**	1			all directories already exist
+**	-1 (and sets errno)	error
+*/
+static int
+mkdirhier(TAR *t, char *filename)
+{
+	char src[MAXPATHLEN], dst[MAXPATHLEN] = "";
+	char *dirp, *nextp = src;
+	int retval = 1;
+	char *path = openbsd_dirname(filename);
+
+	if (strlcpy(src, path, sizeof(src)) > sizeof(src))
+	{
+		errno = ENAMETOOLONG;
+		return -1;
+	}
+
+	if (path[0] == '/')
+		strcpy(dst, "/");
+
+	while ((dirp = strsep(&nextp, "/")) != NULL)
+	{
+		if (*dirp == '\0')
+			continue;
+
+		if (dst[0] != '\0')
+			strcat(dst, "/");
+		strcat(dst, dirp);
+
+		if (mkdirat(t->dirfd, dst, 0777) == -1)
+		{
+			if (errno != EEXIST)
+				return -1;
+		}
+		else
+			retval = 0;
+	}
+
+	return retval;
+}
+
 static int
 tar_set_file_perms(TAR *t, char *filename)
 {
-	mode_t mode;
-	uid_t uid;
-	gid_t gid;
-	struct utimbuf ut;
-
-	mode = th_get_mode(t);
-	uid = th_get_uid(t);
-	gid = th_get_gid(t);
-	ut.modtime = ut.actime = th_get_mtime(t);
+	mode_t mode = th_get_mode(t);
+	uid_t uid = th_get_uid(t);
+	gid_t gid = th_get_gid(t);
+	time_t mtime = th_get_mtime(t);
+	const struct timespec ut[] = {{mtime, 0}, {mtime, 0}};
 
 	/* change owner/group */
 	if (t->options & TAR_CHOWN)
-		if (lchown(filename, uid, gid) == -1)
+		if (fchownat(t->dirfd, filename, uid, gid, t->atflags) == -1)
 		{
 #ifdef DEBUG
-			fprintf(stderr, "lchown(\"%s\", %d, %d): %s\n",
+			fprintf(stderr, "fchownat(\"%s\", %d, %d): %s\n",
 				filename, uid, gid, strerror(errno));
 #endif
 			return -1;
 		}
 
 	/* change access/modification time */
-	if (!TH_ISSYM(t) && utime(filename, &ut) == -1)
-	{
+	if (!TH_ISSYM(t))
+		if (utimensat(t->dirfd, filename, ut, t->atflags) == -1)
+		{
 #ifdef DEBUG
-		perror("utime()");
+			perror("utimensat()");
 #endif
-		return -1;
-	}
+			return -1;
+		}
 
 	/* change permissions */
-	if (!TH_ISSYM(t) && chmod(filename, mode) == -1)
+	if (!TH_ISSYM(t))
+		if (fchmodat(t->dirfd, filename, mode, 0) == -1)
 	{
 #ifdef DEBUG
-		perror("chmod()");
+		perror("fchmodat()");
 #endif
 		return -1;
 	}
@@ -90,7 +134,7 @@ tar_extract_file(TAR *t, char *realname)
 	{
 		struct stat s;
 
-		if (lstat(realname, &s) == 0 || errno != ENOENT)
+		if (fstatat(t->dirfd, realname, &s, t->atflags) == 0 || errno != ENOENT)
 		{
 			errno = EEXIST;
 			return -1;
@@ -161,18 +205,18 @@ tar_extract_regfile(TAR *t, char *filename)
 	uid = th_get_uid(t);
 	gid = th_get_gid(t);
 
-	if (mkdirhier(filename) == -1)
+	if (mkdirhier(t, filename) == -1)
 		return -1;
 
 #ifdef DEBUG
 	printf("  ==> extracting: %s (mode %04o, uid %d, gid %d, %d bytes)\n",
 	       filename, mode, uid, gid, size);
 #endif
-	fdout = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	fdout = openat(t->dirfd, filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (fdout == -1)
 	{
 #ifdef DEBUG
-		perror("open()");
+		perror("openat()");
 #endif
 		return -1;
 	}
@@ -238,7 +282,7 @@ tar_extract_hardlink(TAR * t, char *filename)
 	char *lnp;
 	libtar_hashptr_t hp;
 
-	if (mkdirhier(filename) == -1)
+	if (mkdirhier(t, filename) == -1)
 		return -1;
 	libtar_hashptr_reset(&hp);
 	if (libtar_hash_getkey(t->h, &hp, th_get_linkname(t),
@@ -253,10 +297,10 @@ tar_extract_hardlink(TAR * t, char *filename)
 #ifdef DEBUG
 	printf("  ==> extracting: %s (link to %s)\n", filename, linktgt);
 #endif
-	if (link(linktgt, filename) == -1)
+	if (linkat(t->dirfd, linktgt, t->dirfd, filename, t->atflags) == -1)
 	{
 #ifdef DEBUG
-		perror("link()");
+		perror("linkat()");
 #endif
 		return -1;
 	}
@@ -270,7 +314,7 @@ static int
 tar_extract_symlink(TAR *t, char *filename)
 {
 
-	if (mkdirhier(filename) == -1)
+	if (mkdirhier(t, filename) == -1)
 		return -1;
 
 	if (unlink(filename) == -1 && errno != ENOENT)
@@ -280,10 +324,10 @@ tar_extract_symlink(TAR *t, char *filename)
 	printf("  ==> extracting: %s (symlink to %s)\n",
 	       filename, th_get_linkname(t));
 #endif
-	if (symlink(th_get_linkname(t), filename) == -1)
+	if (symlinkat(th_get_linkname(t), t->dirfd, filename) == -1)
 	{
 #ifdef DEBUG
-		perror("symlink()");
+		perror("symlinkat()");
 #endif
 		return -1;
 	}
@@ -303,18 +347,18 @@ tar_extract_chardev(TAR *t, char *filename)
 	devmaj = th_get_devmajor(t);
 	devmin = th_get_devminor(t);
 
-	if (mkdirhier(filename) == -1)
+	if (mkdirhier(t, filename) == -1)
 		return -1;
 
 #ifdef DEBUG
 	printf("  ==> extracting: %s (character device %ld,%ld)\n",
 	       filename, devmaj, devmin);
 #endif
-	if (mknod(filename, mode | S_IFCHR,
+	if (mknodat(t->dirfd, filename, mode | S_IFCHR,
 		  makedev(devmaj, devmin)) == -1)
 	{
 #ifdef DEBUG
-		perror("mknod()");
+		perror("mknodat()");
 #endif
 		return -1;
 	}
@@ -334,18 +378,18 @@ tar_extract_blockdev(TAR *t, char *filename)
 	devmaj = th_get_devmajor(t);
 	devmin = th_get_devminor(t);
 
-	if (mkdirhier(filename) == -1)
+	if (mkdirhier(t, filename) == -1)
 		return -1;
 
 #ifdef DEBUG
 	printf("  ==> extracting: %s (block device %ld,%ld)\n",
 	       filename, devmaj, devmin);
 #endif
-	if (mknod(filename, mode | S_IFBLK,
+	if (mknodat(t->dirfd, filename, mode | S_IFBLK,
 		  makedev(devmaj, devmin)) == -1)
 	{
 #ifdef DEBUG
-		perror("mknod()");
+		perror("mknodat()");
 #endif
 		return -1;
 	}
@@ -362,21 +406,21 @@ tar_extract_dir(TAR *t, char *filename)
 
 	mode = th_get_mode(t);
 
-	if (mkdirhier(filename) == -1)
+	if (mkdirhier(t, filename) == -1)
 		return -1;
 
 #ifdef DEBUG
 	printf("  ==> extracting: %s (mode %04o, directory)\n", filename,
 	       mode);
 #endif
-	if (mkdir(filename, mode) == -1)
+	if (mkdirat(t->dirfd, filename, mode) == -1)
 	{
 		if (errno == EEXIST)
 		{
-			if (chmod(filename, mode) == -1)
+			if (fchmodat(t->dirfd, filename, mode, 0) == -1)
 			{
 #ifdef DEBUG
-				perror("chmod()");
+				perror("fchmodat()");
 #endif
 				return -1;
 			}
@@ -391,7 +435,7 @@ tar_extract_dir(TAR *t, char *filename)
 		else
 		{
 #ifdef DEBUG
-			perror("mkdir()");
+			perror("mkdirat()");
 #endif
 			return -1;
 		}
@@ -409,16 +453,16 @@ tar_extract_fifo(TAR *t, char *filename)
 
 	mode = th_get_mode(t);
 
-	if (mkdirhier(filename) == -1)
+	if (mkdirhier(t, filename) == -1)
 		return -1;
 
 #ifdef DEBUG
 	printf("  ==> extracting: %s (fifo)\n", filename);
 #endif
-	if (mkfifo(filename, mode) == -1)
+	if (mkfifoat(t->dirfd, filename, mode) == -1)
 	{
 #ifdef DEBUG
-		perror("mkfifo()");
+		perror("mkfifoat()");
 #endif
 		return -1;
 	}

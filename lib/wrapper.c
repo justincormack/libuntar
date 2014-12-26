@@ -18,12 +18,14 @@
 #include <dirent.h>
 #include <errno.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 int
 tar_extract_all(TAR *t, char *prefix)
 {
 	char *filename;
-	char buf[MAXPATHLEN];
 	int i;
 
 #ifdef DEBUG
@@ -31,22 +33,28 @@ tar_extract_all(TAR *t, char *prefix)
 	       (prefix ? prefix : "(null)"));
 #endif
 
+	if (prefix) {
+		t->dirfd = open(prefix, O_RDONLY | O_DIRECTORY);
+		if (t->dirfd == -1)
+			return -1;
+	}
+
 	while ((i = th_read(t)) == 0)
 	{
 #ifdef DEBUG
 		puts("    tar_extract_all(): calling th_get_pathname()");
 #endif
 		filename = th_get_pathname(t);
-		if (prefix != NULL)
-			snprintf(buf, sizeof(buf), "%s/%s", prefix, filename);
-		else
-			strlcpy(buf, filename, sizeof(buf));
 #ifdef DEBUG
 		printf("    tar_extract_all(): calling tar_extract_file(t, "
-		       "\"%s\")\n", buf);
+		       "\"%s\")\n", filename);
 #endif
-		if (tar_extract_file(t, buf) != 0)
+		if (tar_extract_file(t, filename) != 0)
 			return -1;
+	}
+
+	if (t->dirfd >= 0) {
+		close(t->dirfd);
 	}
 
 	return (i == 1 ? 0 : -1);

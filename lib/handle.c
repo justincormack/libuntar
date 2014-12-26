@@ -15,6 +15,8 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include <unistd.h>
 
@@ -41,6 +43,8 @@ tar_init(TAR **t, const char *pathname, tartype_t *type,
 	(*t)->options = options;
 	(*t)->type = (type ? type : &default_type);
 	(*t)->oflags = oflags;
+	(*t)->dirfd = AT_FDCWD;
+	(*t)->atflags = AT_SYMLINK_NOFOLLOW;
 
 	if ((oflags & O_ACCMODE) == O_RDONLY)
 		(*t)->h = libtar_hash_new(256,

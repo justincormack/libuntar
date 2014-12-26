@@ -64,51 +64,6 @@ ino_hash(ino_t *inode)
 }
 
 
-/*
-** mkdirhier() - create all directories needed for a given filename
-** returns:
-**	0			success
-**	1			all directories already exist
-**	-1 (and sets errno)	error
-*/
-int
-mkdirhier(char *filename)
-{
-	char src[MAXPATHLEN], dst[MAXPATHLEN] = "";
-	char *dirp, *nextp = src;
-	int retval = 1;
-	char *path = openbsd_dirname(filename);
-
-	if (strlcpy(src, path, sizeof(src)) > sizeof(src))
-	{
-		errno = ENAMETOOLONG;
-		return -1;
-	}
-
-	if (path[0] == '/')
-		strcpy(dst, "/");
-
-	while ((dirp = strsep(&nextp, "/")) != NULL)
-	{
-		if (*dirp == '\0')
-			continue;
-
-		if (dst[0] != '\0')
-			strcat(dst, "/");
-		strcat(dst, dirp);
-
-		if (mkdir(dst, 0777) == -1)
-		{
-			if (errno != EEXIST)
-				return -1;
-		}
-		else
-			retval = 0;
-	}
-
-	return retval;
-}
-
 
 /* calculate header checksum */
 int
