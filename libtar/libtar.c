@@ -155,7 +155,7 @@ main(int argc, char *argv[])
 	libtar_list_t *l;
 	int return_code = -2;
 
-	progname = basename(argv[0]);
+	progname = argv[0];
 
 	while ((c = getopt(argc, argv, "cC:gtvVxz")) != -1)
 		switch (c)
