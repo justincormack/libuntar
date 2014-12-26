@@ -23,24 +23,22 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static int tar_extract_dir(TAR *t, char *realname);
-static int tar_extract_hardlink(TAR *t, char *realname);
-static int tar_extract_symlink(TAR *t, char *realname);
-static int tar_extract_chardev(TAR *t, char *realname);
-static int tar_extract_blockdev(TAR *t, char *realname);
-static int tar_extract_fifo(TAR *t, char *realname);
-static int tar_extract_regfile(TAR *t, char *realname);
+static int tar_extract_dir(TAR *t, char *filename);
+static int tar_extract_hardlink(TAR *t, char *filename);
+static int tar_extract_symlink(TAR *t, char *filename);
+static int tar_extract_chardev(TAR *t, char *filename);
+static int tar_extract_blockdev(TAR *t, char *filename);
+static int tar_extract_fifo(TAR *t, char *filename);
+static int tar_extract_regfile(TAR *t, char *filename);
 
 static int
-tar_set_file_perms(TAR *t, char *realname)
+tar_set_file_perms(TAR *t, char *filename)
 {
 	mode_t mode;
 	uid_t uid;
 	gid_t gid;
 	struct utimbuf ut;
-	char *filename;
 
-	filename = (realname ? realname : th_get_pathname(t));
 	mode = th_get_mode(t);
 	uid = th_get_uid(t);
 	gid = th_get_gid(t);
@@ -143,7 +141,7 @@ tar_extract_file(TAR *t, char *realname)
 
 /* extract regular file */
 static int
-tar_extract_regfile(TAR *t, char *realname)
+tar_extract_regfile(TAR *t, char *filename)
 {
 	mode_t mode;
 	size_t size;
@@ -152,14 +150,12 @@ tar_extract_regfile(TAR *t, char *realname)
 	int fdout;
 	int i, k;
 	char buf[T_BLOCKSIZE];
-	char *filename;
 
 #ifdef DEBUG
 	printf("==> tar_extract_regfile(t=0x%lx, realname=\"%s\")\n", t,
-	       realname);
+	       filename);
 #endif
 
-	filename = (realname ? realname : th_get_pathname(t));
 	mode = th_get_mode(t);
 	size = th_get_size(t);
 	uid = th_get_uid(t);
@@ -236,14 +232,12 @@ tar_extract_regfile(TAR *t, char *realname)
 
 /* hardlink */
 static int
-tar_extract_hardlink(TAR * t, char *realname)
+tar_extract_hardlink(TAR * t, char *filename)
 {
-	char *filename;
 	char *linktgt = NULL;
 	char *lnp;
 	libtar_hashptr_t hp;
 
-	filename = (realname ? realname : th_get_pathname(t));
 	if (mkdirhier(filename) == -1)
 		return -1;
 	libtar_hashptr_reset(&hp);
@@ -273,11 +267,9 @@ tar_extract_hardlink(TAR * t, char *realname)
 
 /* symlink */
 static int
-tar_extract_symlink(TAR *t, char *realname)
+tar_extract_symlink(TAR *t, char *filename)
 {
-	char *filename;
 
-	filename = (realname ? realname : th_get_pathname(t));
 	if (mkdirhier(filename) == -1)
 		return -1;
 
@@ -302,13 +294,11 @@ tar_extract_symlink(TAR *t, char *realname)
 
 /* character device */
 static int
-tar_extract_chardev(TAR *t, char *realname)
+tar_extract_chardev(TAR *t, char *filename)
 {
 	mode_t mode;
 	unsigned long devmaj, devmin;
-	char *filename;
 
-	filename = (realname ? realname : th_get_pathname(t));
 	mode = th_get_mode(t);
 	devmaj = th_get_devmajor(t);
 	devmin = th_get_devminor(t);
@@ -335,13 +325,11 @@ tar_extract_chardev(TAR *t, char *realname)
 
 /* block device */
 static int
-tar_extract_blockdev(TAR *t, char *realname)
+tar_extract_blockdev(TAR *t, char *filename)
 {
 	mode_t mode;
 	unsigned long devmaj, devmin;
-	char *filename;
 
-	filename = (realname ? realname : th_get_pathname(t));
 	mode = th_get_mode(t);
 	devmaj = th_get_devmajor(t);
 	devmin = th_get_devminor(t);
@@ -368,12 +356,10 @@ tar_extract_blockdev(TAR *t, char *realname)
 
 /* directory */
 static int
-tar_extract_dir(TAR *t, char *realname)
+tar_extract_dir(TAR *t, char *filename)
 {
 	mode_t mode;
-	char *filename;
 
-	filename = (realname ? realname : th_get_pathname(t));
 	mode = th_get_mode(t);
 
 	if (mkdirhier(filename) == -1)
@@ -417,12 +403,10 @@ tar_extract_dir(TAR *t, char *realname)
 
 /* FIFO */
 static int
-tar_extract_fifo(TAR *t, char *realname)
+tar_extract_fifo(TAR *t, char *filename)
 {
 	mode_t mode;
-	char *filename;
 
-	filename = (realname ? realname : th_get_pathname(t));
 	mode = th_get_mode(t);
 
 	if (mkdirhier(filename) == -1)
