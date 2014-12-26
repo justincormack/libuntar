@@ -39,7 +39,7 @@ tar_set_file_perms(TAR *t, char *realname)
 	ut.modtime = ut.actime = th_get_mtime(t);
 
 	/* change owner/group */
-	if (geteuid() == 0)
+	if (t->options & TAR_CHOWN)
 		if (lchown(filename, uid, gid) == -1)
 		{
 # ifdef DEBUG

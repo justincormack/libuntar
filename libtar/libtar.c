@@ -31,6 +31,8 @@
 
 char *progname;
 
+int use_chown = 0;
+
 #ifdef HAVE_LIBZ
 
 int use_zlib = 0;
@@ -90,6 +92,7 @@ int
 extract(char *tarfile, char *rootdir)
 {
 	TAR *t;
+	int options = (use_chown ? TAR_CHOWN : 0);
 
 #ifdef DEBUG
 	puts("opening tarfile...");
@@ -100,7 +103,7 @@ extract(char *tarfile, char *rootdir)
 #else
 		     NULL,
 #endif
-		     O_RDONLY, 0, 0) == -1)
+		     O_RDONLY, 0, options) == -1)
 	{
 		fprintf(stderr, "tar_open(): %s\n", strerror(errno));
 		return -1;
@@ -132,7 +135,7 @@ extract(char *tarfile, char *rootdir)
 void
 usage(void *rootdir)
 {
-	printf("Usage: %s [-C rootdir] [-g] [-z] -x|-t filename.tar\n",
+	printf("Usage: %s [-C rootdir] [-z] [-x] [-p] filename.tar\n",
 	       progname);
 	free(rootdir);
 	exit(-1);
@@ -161,6 +164,9 @@ main(int argc, char *argv[])
 			rootdir = strdup(optarg);
 			break;
 		case 'x':
+			break;
+		case 'p':
+			use_chown = 1;
 			break;
 #ifdef HAVE_LIBZ
 		case 'z':

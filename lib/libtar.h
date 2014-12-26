@@ -93,17 +93,14 @@ typedef struct
 TAR;
 
 /* constant values for the TAR options field */
-#define TAR_GNU			 1	/* use GNU extensions */
+#define TAR_GNU			 1	/* use GNU extensions UNUSED */
 #define TAR_VERBOSE		 2	/* output file info to stdout UNUSED */
 #define TAR_NOOVERWRITE		 4	/* don't overwrite existing files */
 #define TAR_IGNORE_EOT		 8	/* ignore double zero blocks as EOF */
 #define TAR_CHECK_MAGIC		16	/* check magic in file header */
 #define TAR_CHECK_VERSION	32	/* check version in file header */
 #define TAR_IGNORE_CRC		64	/* ignore CRC in file header */
-
-/* this is obsolete - it's here for backwards-compatibility only */
-#define TAR_IGNORE_MAGIC	0
-
+#define TAR_CHOWN	       128	/* chown files */
 
 /* open a new tarfile handle */
 int tar_open(TAR **t, const char *pathname, tartype_t *type,
