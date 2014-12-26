@@ -47,7 +47,6 @@ LIBTAR_OBJS	= block.lo \
 		  extract.lo \
 		  handle.lo \
 		  util.lo \
-		  basename.lo \
 		  dirname.lo
 LIBTAR_HDRS	= ../config.h \
 		  ${srcdir}/compat.h \
