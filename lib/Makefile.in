@@ -53,8 +53,7 @@ LIBTAR_OBJS	= block.lo \
 		  util.lo \
 		  basename.lo \
 		  dirname.lo \
-		  strlcpy.lo \
-		  wrapper.lo
+		  strlcpy.lo
 LIBTAR_HDRS	= ../config.h \
 		  ${srcdir}/compat.h \
 		  ${srcdir}/libtar.h \

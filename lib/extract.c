@@ -24,6 +24,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+static int tar_extract_file(TAR *t, char *realname);
+
 static int tar_extract_dir(TAR *t, char *filename);
 static int tar_extract_hardlink(TAR *t, char *filename);
 static int tar_extract_symlink(TAR *t, char *filename);
@@ -31,6 +33,44 @@ static int tar_extract_chardev(TAR *t, char *filename);
 static int tar_extract_blockdev(TAR *t, char *filename);
 static int tar_extract_fifo(TAR *t, char *filename);
 static int tar_extract_regfile(TAR *t, char *filename);
+
+int
+tar_extract_all(TAR *t, char *prefix)
+{
+	char *filename;
+	int i;
+
+#ifdef DEBUG
+	printf("==> tar_extract_all(TAR *t, \"%s\")\n",
+	       (prefix ? prefix : "(null)"));
+#endif
+
+	if (prefix) {
+		t->dirfd = open(prefix, O_RDONLY | O_DIRECTORY);
+		if (t->dirfd == -1)
+			return -1;
+	}
+
+	while ((i = th_read(t)) == 0)
+	{
+#ifdef DEBUG
+		puts("    tar_extract_all(): calling th_get_pathname()");
+#endif
+		filename = th_get_pathname(t);
+#ifdef DEBUG
+		printf("    tar_extract_all(): calling tar_extract_file(t, "
+		       "\"%s\")\n", filename);
+#endif
+		if (tar_extract_file(t, filename) != 0)
+			return -1;
+	}
+
+	if (t->dirfd >= 0) {
+		close(t->dirfd);
+	}
+
+	return (i == 1 ? 0 : -1);
+}
 
 /*
 ** mkdirhier() - create all directories needed for a given filename
@@ -122,7 +162,7 @@ tar_set_file_perms(TAR *t, char *filename)
 
 
 /* switchboard */
-int
+static int
 tar_extract_file(TAR *t, char *realname)
 {
 	int i;
