@@ -107,8 +107,10 @@ tar_extract_file(TAR *t, char *realname)
 		i = tar_extract_blockdev(t, realname);
 	else if (TH_ISFIFO(t))
 		i = tar_extract_fifo(t, realname);
-	else /* if (TH_ISREG(t)) */
+	else if (TH_ISREG(t))
 		i = tar_extract_regfile(t, realname);
+	else
+		return -1;
 
 	if (i != 0)
 		return i;
@@ -152,12 +154,6 @@ tar_extract_regfile(TAR *t, char *realname)
 	printf("==> tar_extract_regfile(t=0x%lx, realname=\"%s\")\n", t,
 	       realname);
 #endif
-
-	if (!TH_ISREG(t))
-	{
-		errno = EINVAL;
-		return -1;
-	}
 
 	filename = (realname ? realname : th_get_pathname(t));
 	mode = th_get_mode(t);
@@ -243,12 +239,6 @@ tar_extract_hardlink(TAR * t, char *realname)
 	char *lnp;
 	libtar_hashptr_t hp;
 
-	if (!TH_ISLNK(t))
-	{
-		errno = EINVAL;
-		return -1;
-	}
-
 	filename = (realname ? realname : th_get_pathname(t));
 	if (mkdirhier(openbsd_dirname(filename)) == -1)
 		return -1;
@@ -283,12 +273,6 @@ tar_extract_symlink(TAR *t, char *realname)
 {
 	char *filename;
 
-	if (!TH_ISSYM(t))
-	{
-		errno = EINVAL;
-		return -1;
-	}
-
 	filename = (realname ? realname : th_get_pathname(t));
 	if (mkdirhier(openbsd_dirname(filename)) == -1)
 		return -1;
@@ -319,12 +303,6 @@ tar_extract_chardev(TAR *t, char *realname)
 	mode_t mode;
 	unsigned long devmaj, devmin;
 	char *filename;
-
-	if (!TH_ISCHR(t))
-	{
-		errno = EINVAL;
-		return -1;
-	}
 
 	filename = (realname ? realname : th_get_pathname(t));
 	mode = th_get_mode(t);
@@ -359,12 +337,6 @@ tar_extract_blockdev(TAR *t, char *realname)
 	unsigned long devmaj, devmin;
 	char *filename;
 
-	if (!TH_ISBLK(t))
-	{
-		errno = EINVAL;
-		return -1;
-	}
-
 	filename = (realname ? realname : th_get_pathname(t));
 	mode = th_get_mode(t);
 	devmaj = th_get_devmajor(t);
@@ -396,12 +368,6 @@ tar_extract_dir(TAR *t, char *realname)
 {
 	mode_t mode;
 	char *filename;
-
-	if (!TH_ISDIR(t))
-	{
-		errno = EINVAL;
-		return -1;
-	}
 
 	filename = (realname ? realname : th_get_pathname(t));
 	mode = th_get_mode(t);
@@ -451,12 +417,6 @@ tar_extract_fifo(TAR *t, char *realname)
 {
 	mode_t mode;
 	char *filename;
-
-	if (!TH_ISFIFO(t))
-	{
-		errno = EINVAL;
-		return -1;
-	}
 
 	filename = (realname ? realname : th_get_pathname(t));
 	mode = th_get_mode(t);
