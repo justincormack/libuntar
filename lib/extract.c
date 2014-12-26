@@ -23,6 +23,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+static int tar_extract_dir(TAR *t, char *realname);
+static int tar_extract_hardlink(TAR *t, char *realname);
+static int tar_extract_symlink(TAR *t, char *realname);
+static int tar_extract_chardev(TAR *t, char *realname);
+static int tar_extract_blockdev(TAR *t, char *realname);
+static int tar_extract_fifo(TAR *t, char *realname);
+static int tar_extract_regfile(TAR *t, char *realname);
+
 static int
 tar_set_file_perms(TAR *t, char *realname)
 {
@@ -138,7 +146,7 @@ tar_extract_file(TAR *t, char *realname)
 
 
 /* extract regular file */
-int
+static int
 tar_extract_regfile(TAR *t, char *realname)
 {
 	mode_t mode;
@@ -231,7 +239,7 @@ tar_extract_regfile(TAR *t, char *realname)
 
 
 /* hardlink */
-int
+static int
 tar_extract_hardlink(TAR * t, char *realname)
 {
 	char *filename;
@@ -268,7 +276,7 @@ tar_extract_hardlink(TAR * t, char *realname)
 
 
 /* symlink */
-int
+static int
 tar_extract_symlink(TAR *t, char *realname)
 {
 	char *filename;
@@ -297,7 +305,7 @@ tar_extract_symlink(TAR *t, char *realname)
 
 
 /* character device */
-int
+static int
 tar_extract_chardev(TAR *t, char *realname)
 {
 	mode_t mode;
@@ -330,7 +338,7 @@ tar_extract_chardev(TAR *t, char *realname)
 
 
 /* block device */
-int
+static int
 tar_extract_blockdev(TAR *t, char *realname)
 {
 	mode_t mode;
@@ -363,7 +371,7 @@ tar_extract_blockdev(TAR *t, char *realname)
 
 
 /* directory */
-int
+static int
 tar_extract_dir(TAR *t, char *realname)
 {
 	mode_t mode;
@@ -412,7 +420,7 @@ tar_extract_dir(TAR *t, char *realname)
 
 
 /* FIFO */
-int
+static int
 tar_extract_fifo(TAR *t, char *realname)
 {
 	mode_t mode;
@@ -437,5 +445,3 @@ tar_extract_fifo(TAR *t, char *realname)
 
 	return 0;
 }
-
-

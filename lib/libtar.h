@@ -176,17 +176,6 @@ gid_t th_get_gid(TAR *t);
 /* sequentially extract next file from t */
 int tar_extract_file(TAR *t, char *realname);
 
-/* extract different file types */
-int tar_extract_dir(TAR *t, char *realname);
-int tar_extract_hardlink(TAR *t, char *realname);
-int tar_extract_symlink(TAR *t, char *realname);
-int tar_extract_chardev(TAR *t, char *realname);
-int tar_extract_blockdev(TAR *t, char *realname);
-int tar_extract_fifo(TAR *t, char *realname);
-
-/* for regfiles, we need to extract the content blocks as well */
-int tar_extract_regfile(TAR *t, char *realname);
-
 
 /***** util.c *************************************************************/
 
