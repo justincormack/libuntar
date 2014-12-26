@@ -24,6 +24,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+char *openbsd_dirname(const char *);
+
 static int tar_extract_file(TAR *t, char *realname);
 
 static int tar_extract_dir(TAR *t, char *filename);

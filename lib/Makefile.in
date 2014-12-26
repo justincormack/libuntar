@@ -49,7 +49,6 @@ LIBTAR_OBJS	= block.lo \
 		  util.lo \
 		  dirname.lo
 LIBTAR_HDRS	= ../config.h \
-		  ${srcdir}/compat.h \
 		  ${srcdir}/libtar.h \
 		  ${srcdir}/internal.h
 LIBTAR_LIBS	= ./libtar.la
