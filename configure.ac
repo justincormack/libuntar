@@ -110,6 +110,6 @@ fi
 
 
 dnl ### Create output files. #######################################
-AC_CONFIG_FILES([Makefile lib/Makefile libtar/Makefile doc/Makefile])
+AC_CONFIG_FILES([Makefile lib/Makefile libtar/Makefile])
 AC_OUTPUT
 
