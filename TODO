@@ -1,3 +1,2 @@
-- deal with ..
-- use ...at functions
-- linkname will not respect -C if not careful...
+Remove libtool, configure
+
