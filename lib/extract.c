@@ -42,10 +42,10 @@ tar_set_file_perms(TAR *t, char *realname)
 	if (t->options & TAR_CHOWN)
 		if (lchown(filename, uid, gid) == -1)
 		{
-# ifdef DEBUG
+#ifdef DEBUG
 			fprintf(stderr, "lchown(\"%s\", %d, %d): %s\n",
 				filename, uid, gid, strerror(errno));
-# endif
+#endif
 			return -1;
 		}
 
