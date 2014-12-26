@@ -1,2 +1,3 @@
 - deal with ..
-- linkname does not respect -C
+- use ...at functions
+- linkname will not respect -C if not careful...
