@@ -1,3 +1,4 @@
+CFLAGS=-O2 -Wall
 SRC=untar.c
 OBJ=$(SRC:.c=.o)
 LIBS=../lib/libuntar.a
