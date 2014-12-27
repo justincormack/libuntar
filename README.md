@@ -16,13 +16,13 @@ It requires Linux, NetBSD 7, OpenBSD. FreeBSD is missing utimensat(2)
 so not curently working (please fix FreeBSD!).
 
 Current build instructions:
-
+```
    set CFLAGS, LDFLAGS if required
    make
-
+```
 There is an example untar program using the library.
 
 Compile time options:
-   -DUSE_SYMBOLIC_IDS use symbolic names from tarfiles, default is numeric
+   -DUSE\_SYMBOLIC\_IDS use symbolic names from tarfiles, default is numeric
    -DDEBUG verbose debug
-   -DHAVE_LIBZ for untar, use libz
+   -DHAVE\_LIBZ for untar, use libz
