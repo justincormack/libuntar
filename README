@@ -21,3 +21,8 @@ Current build instructions:
    make
 
 There is an example untar program using the library.
+
+Compile time options:
+   -DUSE_SYMBOLIC_IDS use symbolic names from tarfiles, default is numeric
+   -DDEBUG verbose debug
+   -DHAVE_LIBZ for untar, use libz
