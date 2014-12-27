@@ -26,7 +26,7 @@ static tartype_t default_type = { open, close, read, write };
 
 
 static int
-tar_init(TAR **t, const char *pathname, tartype_t *type,
+tar_init(TAR **t, tartype_t *type,
 	 int oflags, int mode, int options)
 {
 	if ((oflags & O_ACCMODE) == O_RDWR)
@@ -39,7 +39,6 @@ tar_init(TAR **t, const char *pathname, tartype_t *type,
 	if (*t == NULL)
 		return -1;
 
-	(*t)->pathname = pathname;
 	(*t)->options = options;
 	(*t)->type = (type ? type : &default_type);
 	(*t)->oflags = oflags;
@@ -55,7 +54,7 @@ int
 tar_open(TAR **t, const char *pathname, tartype_t *type,
 	 int oflags, int mode, int options)
 {
-	if (tar_init(t, pathname, type, oflags, mode, options) == -1)
+	if (tar_init(t, type, oflags, mode, options) == -1)
 		return -1;
 
 	if ((options & TAR_NOOVERWRITE) && (oflags & O_CREAT))
@@ -76,7 +75,7 @@ int
 tar_fdopen(TAR **t, int fd, const char *pathname, tartype_t *type,
 	   int oflags, int mode, int options)
 {
-	if (tar_init(t, pathname, type, oflags, mode, options) == -1)
+	if (tar_init(t, type, oflags, mode, options) == -1)
 		return -1;
 
 	(*t)->fd = fd;

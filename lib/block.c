@@ -42,7 +42,7 @@ th_read_internal(TAR *t)
 	int num_zero_blocks = 0;
 
 #ifdef DEBUG
-	printf("==> th_read_internal(TAR=\"%s\")\n", t->pathname);
+	printf("==> th_read_internal\n");
 #endif
 
 	while ((i = tar_block_read(t, &(t->th_buf))) == T_BLOCKSIZE)

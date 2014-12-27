@@ -78,7 +78,6 @@ tartype_t;
 typedef struct
 {
 	tartype_t *type;
-	const char *pathname;
 	long fd;
 	int oflags;
 	int options;
