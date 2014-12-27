@@ -21,7 +21,8 @@ Build instructions:
    set CFLAGS, LDFLAGS if required
    make
 ```
-There is an example untar program using the library.
+There is an example untar program using the library in untar/ and an example
+of linking a tarfile into an executable in mem/
 
 Compile time options:
    -DUSE\_SYMBOLIC\_IDS use symbolic names from tarfiles, default is numeric
