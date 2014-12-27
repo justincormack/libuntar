@@ -7,8 +7,10 @@ INCLUDES=-I.
 
 default:	$(LIB)
 
-%.o:		%.c $(HEADERS)
-		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $< -o $@		
+.SUFFIXES:	.c
+
+.c.o:		$(HEADERS)
+		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
 
 $(LIB):		$(OBJ) $(HEADERS)
 		ar rcs $(LIB) $(OBJ)

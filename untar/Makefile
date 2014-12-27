@@ -5,8 +5,10 @@ LIBS=../lib/libuntar.a
 OUT=untar
 INCLUDES=-I../lib
 
-%.o:		%.c $(HEADERS)
-		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $< -o $@		
+.SUFFIXES:	.c
+
+.c.o:		$(HEADERS)
+		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
 
 $(OUT):		$(OBJ) $(LIBS)
 		$(CC) $(LDFLAGS) $^ -o $@
