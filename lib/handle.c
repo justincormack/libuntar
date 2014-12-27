@@ -22,7 +22,7 @@
 
 #include <stdlib.h>
 
-static tartype_t default_type = { open, close, read, write };
+static tartype_t default_type = { open, close, read };
 
 
 static int

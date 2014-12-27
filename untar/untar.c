@@ -79,7 +79,7 @@ gzopen_frontend(char *pathname, int oflags, int mode)
 }
 
 tartype_t gztype = { (openfunc_t) gzopen_frontend, (closefunc_t) gzclose,
-	(readfunc_t) gzread, (writefunc_t) gzwrite
+	(readfunc_t) gzread
 };
 
 #endif /* HAVE_LIBZ */

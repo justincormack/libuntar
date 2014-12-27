@@ -64,14 +64,12 @@ struct tar_header
 typedef int (*openfunc_t)(const char *, int, ...);
 typedef int (*closefunc_t)(int);
 typedef ssize_t (*readfunc_t)(int, void *, size_t);
-typedef ssize_t (*writefunc_t)(int, const void *, size_t);
 
 typedef struct
 {
 	openfunc_t openfunc;
 	closefunc_t closefunc;
 	readfunc_t readfunc;
-	writefunc_t writefunc;
 }
 tartype_t;
 
