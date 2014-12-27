@@ -12,7 +12,7 @@ untar.o:	untar.c $(HEADERS)
 		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
 
 $(OUT):		$(OBJ) $(LIBS)
-		$(CC) $(LDFLAGS) $^ -o $@
+		$(CC) $(LDFLAGS) $(OBJ) $(LIBS) -o $@
 
 .PHONY:		clean
 clean:		
