@@ -4,3 +4,4 @@ issues with ..
 more cleanup
 tests
 allow read functions to take pointers not ints to fix gzip
+_t is reserved namespace, fix
