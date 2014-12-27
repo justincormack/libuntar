@@ -10,9 +10,9 @@ add tests, and remove all support for obsolete platforms, and simplify
 the build process, so there is just a very minimal library to extract
 tar files, optionally with compression.
 
-Current build instructions (due to change)
+Current build instructions:
 
-   autoreconf --force --install
-   ./configure
+   set CFLAGS, LDFLAGS if required
    make
-   make install
+
+There is an example untar program using the library.
