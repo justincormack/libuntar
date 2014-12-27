@@ -3,3 +3,4 @@ timestamp precision
 issues with ..
 more cleanup
 tests
+allow read functions to take pointers not ints
