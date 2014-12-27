@@ -3,8 +3,12 @@ SRC=block.c decode.c extract.c handle.c util.c
 HEADERS=libtar.h
 OBJ=$(SRC:.c=.o)
 LIB=libuntar.a
+INCLUDES=-I.
 
 default:	${LIB}
+
+%.o:		%.c ${HEADERS}
+		$(CC) -c $(CPPFLAGS) $(CFLAGS) ${INCLUDES} $< -o $@		
 
 ${LIB}:		${OBJ} ${HEADERS}
 		ar rcs ${LIB} ${OBJ}
