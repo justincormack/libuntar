@@ -4,6 +4,7 @@ OBJ=$(SRC:.c=.o)
 LIBS=../lib/libuntar.a
 OUT=untar
 INCLUDES=-I../lib
+HEADERS=../libtar.h
 
 .SUFFIXES:	.c
 
