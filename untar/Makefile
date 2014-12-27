@@ -6,6 +6,8 @@ OUT=untar
 INCLUDES=-I../lib
 HEADERS=../lib/libtar.h
 
+default:	$(OUT)
+
 untar.o:	untar.c $(HEADERS)
 		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
 
