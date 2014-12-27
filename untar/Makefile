@@ -5,12 +5,12 @@ LIBS=../lib/libuntar.a
 OUT=untar
 INCLUDES=-I../lib
 
-%.o:		%.c ${HEADERS}
-		$(CC) -c $(CPPFLAGS) $(CFLAGS) ${INCLUDES} $< -o $@		
+%.o:		%.c $(HEADERS)
+		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $< -o $@		
 
-${OUT}:		${OBJ} ${LIBS}
-		${CC} ${LDFLAGS} $^ -o $@
+$(OUT):		$(OBJ) $(LIBS)
+		$(CC) $(LDFLAGS) $^ -o $@
 
 .PHONY:		clean
 clean:		
-		rm -f ${OBJ} ${OUT}
+		rm -f $(OBJ) $(OUT)
