@@ -57,13 +57,3 @@ oct_to_int(char *oct)
 	return sscanf(oct, "%o", &i) == 1 ? i : 0;
 }
 
-
-/* integer to string-octal conversion, no NULL */
-void
-int_to_oct_nonull(int num, char *oct, size_t octlen)
-{
-	snprintf(oct, octlen, "%*lo", octlen - 1, (unsigned long)num);
-	oct[octlen - 1] = ' ';
-}
-
-

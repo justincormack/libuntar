@@ -187,14 +187,6 @@ int th_signed_crc_calc(TAR *t);
 /* string-octal to integer conversion */
 int oct_to_int(char *oct);
 
-/* integer to NULL-terminated string-octal conversion */
-#define int_to_oct(num, oct, octlen) \
-	snprintf((oct), (octlen), "%*lo ", (octlen) - 2, (unsigned long)(num))
-
-/* integer to string-octal conversion, no NULL */
-void int_to_oct_nonull(int num, char *oct, size_t octlen);
-
-
 #ifdef __cplusplus
 }
 #endif
