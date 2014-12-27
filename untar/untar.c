@@ -137,11 +137,6 @@ usage(void *rootdir)
 	exit(-1);
 }
 
-
-#define MODE_LIST	1
-#define MODE_CREATE	2
-#define MODE_EXTRACT	3
-
 int
 main(int argc, char *argv[])
 {
@@ -187,5 +182,3 @@ main(int argc, char *argv[])
 	free(rootdir);
 	return return_code;
 }
-
-
