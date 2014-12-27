@@ -180,7 +180,9 @@ main(int argc, char *argv[])
 		usage(rootdir);
 	}
 
-	return_code = extract(argv[optind], rootdir);
+	tarfile = argv[optind];
+
+	return_code = extract(tarfile, rootdir);
 
 	free(rootdir);
 	return return_code;

@@ -218,10 +218,7 @@ tar_extract_file(TAR *t, char *realname)
 static int
 tar_extract_regfile(TAR *t, char *filename)
 {
-	mode_t mode;
-	size_t size;
-	uid_t uid;
-	gid_t gid;
+	size_t size = th_get_size(t);
 	int fdout;
 	int i, k;
 	char buf[T_BLOCKSIZE];
@@ -230,11 +227,6 @@ tar_extract_regfile(TAR *t, char *filename)
 	printf("==> tar_extract_regfile(t=0x%lx, realname=\"%s\")\n", t,
 	       filename);
 #endif
-
-	mode = th_get_mode(t);
-	size = th_get_size(t);
-	uid = th_get_uid(t);
-	gid = th_get_gid(t);
 
 	if (mkdirhier(t, filename) == -1)
 		return -1;
@@ -251,26 +243,6 @@ tar_extract_regfile(TAR *t, char *filename)
 #endif
 		return -1;
 	}
-
-#if 0
-	/* change the owner.  (will only work if run as root) */
-	if (fchown(fdout, uid, gid) == -1 && errno != EPERM)
-	{
-#ifdef DEBUG
-		perror("fchown()");
-#endif
-		return -1;
-	}
-
-	/* make sure the mode isn't inheritted from a file we're overwriting */
-	if (fchmod(fdout, mode & 07777) == -1)
-	{
-#ifdef DEBUG
-		perror("fchmod()");
-#endif
-		return -1;
-	}
-#endif
 
 	/* extract the file */
 	for (i = size; i > 0; i -= T_BLOCKSIZE)
