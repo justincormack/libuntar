@@ -1,4 +1,4 @@
-SUBDIRS=lib libtar
+SUBDIRS=lib untar
 
 .PHONY:		subdirs $(SUBDIRS) clean
 
