@@ -1,6 +1,6 @@
 CFLAGS?=-O2 -Wall
 SRC=block.c decode.c extract.c handle.c util.c
-HEADERS=libtar.h
+HEADERS=libuntar.h
 OBJ=$(SRC:.c=.o)
 LIB=libuntar.a
 INCLUDES=-I.

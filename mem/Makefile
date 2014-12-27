@@ -4,7 +4,7 @@ OBJ=$(SRC:.c=.o)
 LIBS=../lib/libuntar.a
 OUT=untar
 INCLUDES=-I../lib
-HEADERS=../lib/libtar.h
+HEADERS=../lib/libuntar.h
 
 TARFILE=image.tar
 TOUT=$(TARFILE:.tar=.tar.obj)

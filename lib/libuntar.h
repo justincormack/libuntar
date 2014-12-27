@@ -3,15 +3,15 @@
 **  Copyright 1998-2003 Mark D. Roth
 **  All rights reserved.
 **
-**  libtar.h - header file for libtar library
+**  libuntar.h - header file for libuntar library
 **
 **  Mark D. Roth <roth@uiuc.edu>
 **  Campus Information Technologies and Educational Services
 **  University of Illinois at Urbana-Champaign
 */
 
-#ifndef LIBTAR_H
-#define LIBTAR_H
+#ifndef LIBUNTAR_H
+#define LIBUNTAR_H
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -188,5 +188,5 @@ int oct_to_int(char *oct);
 }
 #endif
 
-#endif /* ! LIBTAR_H */
+#endif /* ! LIBUNTAR_H */
 

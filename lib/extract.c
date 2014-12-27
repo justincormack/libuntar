@@ -10,7 +10,7 @@
 **  University of Illinois at Urbana-Champaign
 */
 
-#include <libtar.h>
+#include <libuntar.h>
 
 #include <stdio.h>
 #include <string.h>
