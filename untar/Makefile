@@ -6,9 +6,7 @@ OUT=untar
 INCLUDES=-I../lib
 HEADERS=../lib/libtar.h
 
-.SUFFIXES:	.c
-
-.c.o:		$(HEADERS)
+untar.o:	untar.c $(HEADERS)
 		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
 
 $(OUT):		$(OBJ) $(LIBS)

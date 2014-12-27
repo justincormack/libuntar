@@ -7,12 +7,22 @@ INCLUDES=-I.
 
 default:	$(LIB)
 
-.SUFFIXES:	.c
-
-.c.o:		$(HEADERS)
+block.o:	block.c $(HEADERS)
 		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
 
-$(LIB):		$(OBJ) $(HEADERS)
+decode.o:	decode.c $(HEADERS)
+		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
+
+extract.o:	extract.c $(HEADERS)
+		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
+
+handle.o:	handle.c $(HEADERS)
+		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
+
+util.o:		util.c $(HEADERS)
+		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
+
+$(LIB):		$(OBJ)
 		ar rcs $(LIB) $(OBJ)
 
 .PHONY:		clean
