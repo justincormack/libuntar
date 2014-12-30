@@ -20,7 +20,7 @@ extern const char _binary_image_tar_end[];
 static int offset = 0;
 static size_t size = 0;
 
-int
+static int
 memopen(const char *filename, int flags, mode_t mode)
 {
 	offset = 0;
@@ -28,12 +28,14 @@ memopen(const char *filename, int flags, mode_t mode)
 	return 0;
 }
 
-int memclose(int fd)
+static int
+memclose(int fd)
 {
 	return 0;
 }
 
-ssize_t memread(int fd, void *buf, size_t len)
+static ssize_t
+memread(int fd, void *buf, size_t len)
 {
 	if (offset + len > size)
 		len = size - offset;
@@ -73,12 +75,3 @@ extract(char *tarfile, char *rootdir)
 
 	return 0;
 }
-
-int
-main(int argc, char *argv[])
-{
-
-	return  extract(NULL, NULL);
-}
-
-

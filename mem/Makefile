@@ -1,5 +1,5 @@
 CFLAGS?=-O2 -Wall
-SRC=untar.c
+SRC=untar.c main.c
 OBJ=$(SRC:.c=.o)
 LIBS=../lib/libuntar.a
 OUT=untar
@@ -13,6 +13,9 @@ OBJCOPY?=objcopy
 default:	$(OUT)
 
 untar.o:	untar.c $(HEADERS)
+		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
+
+main.o:		main.c $(HEADERS)
 		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
 
 $(OUT):		$(OBJ) $(LIBS) $(TOUT)
