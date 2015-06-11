@@ -1,5 +1,5 @@
 CFLAGS?=-O2 -Wall
-SRC=block.c extract.c handle.c util.c
+SRC=block.c extract.c handle.c
 HEADERS=libuntar.h
 OBJ=$(SRC:.c=.o)
 LIB=libuntar.a
@@ -14,9 +14,6 @@ extract.o:	extract.c $(HEADERS)
 		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
 
 handle.o:	handle.c $(HEADERS)
-		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
-
-util.o:		util.c $(HEADERS)
 		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
 
 $(LIB):		$(OBJ)
