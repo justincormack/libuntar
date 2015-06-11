@@ -25,12 +25,21 @@
 
 #include "libuntar.h"
 
+/* headers */
+
+static int th_crc_calc(TAR *t);
+static int th_signed_crc_calc(TAR *t);
+/* compare checksums in a forgiving way */
+#define th_crc_ok(t) (th_get_crc(t) == th_crc_calc(t) || th_get_crc(t) == th_signed_crc_calc(t))
+
+static int oct_to_int(char *oct);
+
 /*
 **  util.c - miscellaneous utility code for libtar
 */
 
 /* calculate header checksum */
-int
+static int
 th_crc_calc(TAR *t)
 {
 	int i, sum = 0;
@@ -45,7 +54,7 @@ th_crc_calc(TAR *t)
 
 
 /* calculate a signed header checksum */
-int
+static int
 th_signed_crc_calc(TAR *t)
 {
 	int i, sum = 0;
@@ -60,7 +69,7 @@ th_signed_crc_calc(TAR *t)
 
 
 /* string-octal to integer conversion */
-int
+static int
 oct_to_int(char *oct)
 {
 	int i;

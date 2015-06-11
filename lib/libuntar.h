@@ -170,20 +170,6 @@ gid_t th_get_gid(TAR *t);
 /* extract groups of files */
 int tar_extract_all(TAR *t, char *prefix);
 
-/***** util.c *************************************************************/
-
-/* calculate header checksum */
-int th_crc_calc(TAR *t);
-
-/* calculate a signed header checksum */
-int th_signed_crc_calc(TAR *t);
-
-/* compare checksums in a forgiving way */
-#define th_crc_ok(t) (th_get_crc(t) == th_crc_calc(t) || th_get_crc(t) == th_signed_crc_calc(t))
-
-/* string-octal to integer conversion */
-int oct_to_int(char *oct);
-
 #ifdef __cplusplus
 }
 #endif
