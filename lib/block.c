@@ -34,6 +34,54 @@ static int th_signed_crc_calc(TAR *t);
 
 static int oct_to_int(char *oct);
 
+/* macros for reading/writing tarchive blocks */
+#define tar_block_read(t, buf) \
+        (*((t)->type->readfunc))((t)->fd, (char *)(buf), T_BLOCKSIZE)
+
+/* read a header block */
+static int th_read(TAR *t);
+
+/* determine file type */
+#define TH_ISREG(t)     ((t)->th_buf.typeflag == REGTYPE \
+                         || (t)->th_buf.typeflag == AREGTYPE \
+                         || (t)->th_buf.typeflag == CONTTYPE \
+                         || (S_ISREG((mode_t)oct_to_int((t)->th_buf.mode)) \
+                             && (t)->th_buf.typeflag != LNKTYPE))
+#define TH_ISLNK(t)     ((t)->th_buf.typeflag == LNKTYPE)
+#define TH_ISSYM(t)     ((t)->th_buf.typeflag == SYMTYPE \
+                         || S_ISLNK((mode_t)oct_to_int((t)->th_buf.mode)))
+#define TH_ISCHR(t)     ((t)->th_buf.typeflag == CHRTYPE \
+                         || S_ISCHR((mode_t)oct_to_int((t)->th_buf.mode)))
+#define TH_ISBLK(t)     ((t)->th_buf.typeflag == BLKTYPE \
+                         || S_ISBLK((mode_t)oct_to_int((t)->th_buf.mode)))
+#define TH_ISDIR(t)     ((t)->th_buf.typeflag == DIRTYPE \
+                         || S_ISDIR((mode_t)oct_to_int((t)->th_buf.mode)) \
+                         || ((t)->th_buf.typeflag == AREGTYPE \
+                             && strlen((t)->th_buf.name) \
+                             && ((t)->th_buf.name[strlen((t)->th_buf.name) - 1] == '/')))
+#define TH_ISFIFO(t)    ((t)->th_buf.typeflag == FIFOTYPE \
+                         || S_ISFIFO((mode_t)oct_to_int((t)->th_buf.mode)))
+#define TH_ISLONGNAME(t)        ((t)->th_buf.typeflag == GNU_LONGNAME_TYPE)
+#define TH_ISLONGLINK(t)        ((t)->th_buf.typeflag == GNU_LONGLINK_TYPE)
+
+/* decode tar header info */
+#define th_get_crc(t) oct_to_int((t)->th_buf.chksum)
+/* We cast from int (what oct_to_int() returns) to
+   unsigned int, to avoid unwieldy sign extensions
+   from occurring on systems where size_t is bigger than int,
+   since th_get_size() is often stored into a size_t. */
+#define th_get_size(t) ((unsigned int)oct_to_int((t)->th_buf.size))
+#define th_get_mtime(t) oct_to_int((t)->th_buf.mtime)
+#define th_get_devmajor(t) oct_to_int((t)->th_buf.devmajor)
+#define th_get_devminor(t) oct_to_int((t)->th_buf.devminor)
+#define th_get_linkname(t) ((t)->th_buf.gnu_longlink \
+                            ? (t)->th_buf.gnu_longlink \
+                            : (t)->th_buf.linkname)
+static char *th_get_pathname(TAR *t);
+static mode_t th_get_mode(TAR *t);
+static uid_t th_get_uid(TAR *t);
+static gid_t th_get_gid(TAR *t);
+
 /*
 **  util.c - miscellaneous utility code for libtar
 */
@@ -96,7 +144,7 @@ oct_to_int(char *oct)
 	  fixed for security reasons.
 	  Thanks to Chris Palmer for the critique.
 */
-int
+static int
 th_read_internal(TAR *t)
 {
 	int i;
@@ -159,7 +207,7 @@ th_read_internal(TAR *t)
 
 
 /* wrapper function for th_read_internal() to handle GNU extensions */
-int
+static int
 th_read(TAR *t)
 {
 	int i;
@@ -337,7 +385,7 @@ th_read(TAR *t)
 */
 
 /* determine full path name */
-char *
+static char *
 th_get_pathname(TAR *t)
 {
 	if (t->th_buf.gnu_longname)
@@ -367,7 +415,7 @@ th_get_pathname(TAR *t)
 }
 
 
-uid_t
+static uid_t
 th_get_uid(TAR *t)
 {
 	int uid;
@@ -385,7 +433,7 @@ th_get_uid(TAR *t)
 }
 
 
-gid_t
+static gid_t
 th_get_gid(TAR *t)
 {
 	int gid;
@@ -402,8 +450,7 @@ th_get_gid(TAR *t)
 	return gid;
 }
 
-
-mode_t
+static mode_t
 th_get_mode(TAR *t)
 {
 	mode_t mode;
