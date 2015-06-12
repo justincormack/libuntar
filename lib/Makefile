@@ -1,5 +1,5 @@
 CFLAGS?=-O2 -Wall
-SRC=extract.c handle.c
+SRC=untar.c
 HEADERS=libuntar.h
 OBJ=$(SRC:.c=.o)
 LIB=libuntar.a
@@ -7,10 +7,7 @@ INCLUDES=-I.
 
 default:	$(LIB)
 
-extract.o:	extract.c $(HEADERS)
-		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
-
-handle.o:	handle.c $(HEADERS)
+untar.o:	untar.c $(HEADERS)
 		$(CC) -c $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -o $@ $<
 
 $(LIB):		$(OBJ)
