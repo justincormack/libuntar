@@ -781,7 +781,7 @@ tar_extract_symlink(TAR *t, char *filename)
 	if (mkdirhier(t, filename) == -1)
 		return -1;
 
-	if (unlink(filename) == -1 && errno != ENOENT)
+	if (unlinkat(t->dirfd, filename, 0) == -1 && errno != ENOENT)
 		return -1;
 
 #ifdef DEBUG
